@@ -1,0 +1,25 @@
+database
+	word
+		varchar englishWord
+		varchar indonesianWord
+		int state(1,2,3)
+			1 : new
+			2 : old
+			3 : delete
+		boolean alredyView
+		
+app
+tab1
+tab2
+	textView englishWord
+	textView indonesianWord (hidden)
+	button next
+	button view
+tab3
+	editView find
+	editView englishWord
+	editView indonesianWord
+	select option 
+		new, old, delete
+tab4
+	info
