@@ -36,8 +36,8 @@ public class MainTab extends TabActivity {
 		/* tid1 is firstTabSpec Id. Its used to access outside. */
 		TabSpec newWordSpec = tabHost.newTabSpec("new");
 		TabSpec oldWordSpec = tabHost.newTabSpec("old");
-		TabSpec editTabSpec = tabHost.newTabSpec("old");
-		TabSpec infoTabSpec = tabHost.newTabSpec("old");
+		TabSpec editTabSpec = tabHost.newTabSpec("edit");
+		TabSpec infoTabSpec = tabHost.newTabSpec("info");
 
 		/* TabSpec setIndicator() is used to set name for the tab. */
 		/* TabSpec setContent() is used to set content for a particular tab. */
@@ -66,18 +66,17 @@ public class MainTab extends TabActivity {
 	}
 
 	protected void initFirstlyLauncth() {
-		Word.deleteTable(getSQLite());
+		getSQLite().execSQL(Word.getCreatedTableStatment());
 		DataBase.initWordFromLocal(getSQLite());
-
 	}
 
 	public void initFirst() {
 		MyApp appState = ((MyApp) this.getApplicationContext());
 		appState.setSd(openOrCreateDatabase(DataBase.DATABASE_NAME,
 				MODE_PRIVATE, null));
-		// initFirstlyLauncth();
+//		 initFirstlyLauncth();
 		getAppState().setAllRow(Word.getAllRow(getSQLite()));
-		testUpdate();
+//		testUpdate();
 	}
 
 	public void testUpdate() {

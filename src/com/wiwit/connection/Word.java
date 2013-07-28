@@ -65,17 +65,15 @@ public class Word {
 		this.haveReadOld = haveReadOld;
 	}
 
-	public static void deleteTable(SQLiteDatabase sd) {
-		sd.execSQL("DROP TABLE " + TABLE_NAME);
-	}
-
 	public static String getCreatedTableStatment() {
-		return "CREATE TABLE IF NOT EXISTS " + "`words`(`" + COLUMN_1
+		String sql = "CREATE TABLE IF NOT EXISTS " + "`words`(`" + COLUMN_1
 				+ "` varchar(32) NOT NULL,  `" + COLUMN_2
 				+ "` varchar(128) NOT NULL,  `" + COLUMN_3
 				+ "` varchar(16) NOT NULL, `" + COLUMN_4
 				+ "` tinyint(1) NOT NULL, `" + COLUMN_5
 				+ "` tinyint(1) NOT NULL, PRIMARY KEY (`" + COLUMN_1 + "`))";
+		DebugHelper.debug(sql);
+		return sql;
 	}
 
 	public void insert(SQLiteDatabase sd) {

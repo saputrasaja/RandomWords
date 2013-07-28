@@ -2,22 +2,14 @@ package com.wiwit.connection;
 
 public class WordInfoUtil {
 
-	private int all;
 	private int newWord;
 	private int oldWord;
+	private int deleted;
 
 	public WordInfoUtil() {
-		all = 0;
 		oldWord = 0;
 		newWord = 0;
-	}
-
-	public int getAll() {
-		return all;
-	}
-
-	public void setAll(int all) {
-		this.all = all;
+		setDeleted(0);
 	}
 
 	public int getNewWord() {
@@ -36,8 +28,12 @@ public class WordInfoUtil {
 		this.oldWord = oldWord;
 	}
 
-	public void incrementAll() {
-		all++;
+	public int getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(int deleted) {
+		this.deleted = deleted;
 	}
 
 	public void incrementOld() {
@@ -46,5 +42,13 @@ public class WordInfoUtil {
 
 	public void incrementNew() {
 		newWord++;
+	}
+
+	public void incrementDelete() {
+		deleted++;
+	}
+
+	public int getAllWord() {
+		return this.deleted + this.newWord + this.oldWord;
 	}
 }
