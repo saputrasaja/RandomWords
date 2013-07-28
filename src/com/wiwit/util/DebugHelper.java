@@ -46,8 +46,8 @@ public class DebugHelper {
 		e.printStackTrace();
 	}
 
-	public static void debug(String msg) {
-		DebugHelper db = new DebugHelper(null, msg);
+	public static void debug(Object msg) {
+		DebugHelper db = new DebugHelper(null, String.valueOf(msg));
 		db.doDebug();
 	}
 

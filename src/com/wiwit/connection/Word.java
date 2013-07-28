@@ -13,10 +13,14 @@ public class Word {
 	private String englishWord;
 	private String indonesianWord;
 	private String state;
+	private boolean haveReadNew;
+	private boolean haveReadOld;
 
 	public static String COLUMN_1 = "english_word";
 	public static String COLUMN_2 = "indonesian_word";
 	public static String COLUMN_3 = "state";
+	public static String COLUMN_4 = "have_read_new";
+	public static String COLUMN_5 = "have_read_old";
 
 	public Word() {
 	}
@@ -45,38 +49,84 @@ public class Word {
 		this.state = state;
 	}
 
+	public boolean isHaveReadNew() {
+		return haveReadNew;
+	}
+
+	public void setHaveReadNew(boolean haveReadNew) {
+		this.haveReadNew = haveReadNew;
+	}
+
+	public boolean isHaveReadOld() {
+		return haveReadOld;
+	}
+
+	public void setHaveReadOld(boolean haveReadOld) {
+		this.haveReadOld = haveReadOld;
+	}
+
 	public static void deleteTable(SQLiteDatabase sd) {
 		sd.execSQL("DROP TABLE " + TABLE_NAME);
 	}
 
 	public static String getCreatedTableStatment() {
-		return "CREATE TABLE IF NOT EXISTS `words`(`" + COLUMN_1
+		return "CREATE TABLE IF NOT EXISTS " + "`words`(`" + COLUMN_1
 				+ "` varchar(32) NOT NULL,  `" + COLUMN_2
 				+ "` varchar(128) NOT NULL,  `" + COLUMN_3
-				+ "` varchar(16) NOT NULL,  PRIMARY KEY (`english_word`))";
+				+ "` varchar(16) NOT NULL, `" + COLUMN_4
+				+ "` tinyint(1) NOT NULL, `" + COLUMN_5
+				+ "` tinyint(1) NOT NULL, PRIMARY KEY (`" + COLUMN_1 + "`))";
 	}
 
-	public void insert(SQLiteDatabase sd, Word w) {
+	public void insert(SQLiteDatabase sd) {
 		try {
-			String countSql = "SELECT count(*) FROM `words` where english_word ='"
-					+ w.getEnglishWord() + "'";
-			String insertSql = "INSERT INTO " + TABLE_NAME
-					+ " (`english_word` ,`indonesian_word` ,`state`)VALUES ('"
-					+ w.getEnglishWord() + "', '" + w.getIndonesianWord()
-					+ "', '" + w.getState() + "');";
-			DebugHelper.debug(insertSql);
-			sd.execSQL(insertSql);
+			// String countSql =
+			// "SELECT count(*) FROM `words` where english_word ='"
+			// + w.getEnglishWord() + "'";
+			String insertSql2 = "INSERT INTO '" + TABLE_NAME + "'";
+			insertSql2 = insertSql2 + " (`" + COLUMN_1 + "`, `" + COLUMN_2
+					+ "`, `" + COLUMN_3 + "`, `" + COLUMN_4 + "`, `" + COLUMN_5
+					+ "`) VALUES ";
+			insertSql2 = insertSql2 + "('" + getEnglishWord() + "', '"
+					+ getIndonesianWord() + "', '" + getState() + "','"
+					+ (isHaveReadNew() ? 1 : 0) + "','"
+					+ (isHaveReadOld() ? 1 : 0) + "');";
+			// String insertSql = "INSERT INTO " + TABLE_NAME
+			// + " (`english_word` ,`indonesian_word` ,`state`)VALUES "
+			// + "('" + w.getEnglishWord() + "', '"
+			// + w.getIndonesianWord() + "', '" + w.getState() + "');";
+			DebugHelper.debug(insertSql2);
+			sd.execSQL(insertSql2);
 		} catch (Exception e) {
 			DebugHelper.exception(this, e);
+			System.exit(0);
 		}
 	}
 
 	public void update(SQLiteDatabase sd, String key) {
-		String sql = "UPDATE " + TABLE_NAME + " SET " + COLUMN_1 + " = '"
-				+ getEnglishWord() + "', " + COLUMN_2 + " = '" + indonesianWord
-				+ "', " + COLUMN_3 + " ='" + getState() + "' WHERE " + COLUMN_1
-				+ " ='" + key + "';";
-		sd.execSQL(sql);
+		String sql2 = "UPDATE `" + TABLE_NAME + "` SET ";
+		sql2 = sql2 + "`" + COLUMN_1 + "` = '" + getEnglishWord() + "', ";
+		sql2 = sql2 + "`" + COLUMN_2 + "` = '" + getIndonesianWord() + "', ";
+		sql2 = sql2 + "`" + COLUMN_3 + "` = '" + getState() + "', ";
+		sql2 = sql2 + "`" + COLUMN_4 + "` = '" + (isHaveReadNew() ? 1 : 0)
+				+ "', ";
+		sql2 = sql2 + "`" + COLUMN_5 + "` = '" + (isHaveReadOld() ? 1 : 0)
+				+ "'";
+		sql2 = sql2 + " WHERE `" + TABLE_NAME + "`.`english_word` = '" + key
+				+ "'";
+		// String sql = "UPDATE " + TABLE_NAME + " SET " + COLUMN_1 + " = '"
+		// + getEnglishWord() + "', " + COLUMN_2 + " = '" + indonesianWord
+		// + "', " + COLUMN_3 + " ='" + getState() + "' WHERE " + COLUMN_1
+		// + " ='" + key + "';";
+		try {
+			DebugHelper.debug(sql2);
+			sd.execSQL(sql2);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			DebugHelper.exception(e);
+		}
+
 	}
 
 	public static void fillIt(Word w, String variable, String value) {
@@ -86,6 +136,10 @@ public class Word {
 			w.setIndonesianWord(value);
 		} else if (variable.equals(COLUMN_3)) {
 			w.setState(value);
+		} else if (variable.equals(COLUMN_4)) {
+			w.setHaveReadNew(value.equals("0") ? false : true);
+		} else if (variable.equals(COLUMN_5)) {
+			w.setHaveReadOld(value.equals("0") ? false : true);
 		}
 	}
 

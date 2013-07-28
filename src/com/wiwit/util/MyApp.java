@@ -1,19 +1,43 @@
 package com.wiwit.util;
 
+import java.util.HashMap;
+
+import com.wiwit.connection.Word;
+import com.wiwit.connection.WordInfoUtil;
+
 import android.app.Application;
+import android.database.sqlite.SQLiteDatabase;
 
-public class MyApp extends Application{
+public class MyApp extends Application {
 
-	private String test;
-	
+	private SQLiteDatabase sd;
+	private HashMap<String, Word> allRow;
+
 	public MyApp() {
 	}
 
-	public String getTest() {
-		return test;
+	public SQLiteDatabase getSd() {
+		return sd;
 	}
 
-	public void setTest(String test) {
-		this.test = test;
+	public void setSd(SQLiteDatabase sd) {
+		this.sd = sd;
+	}
+
+	public HashMap<String, Word> getAllRow() {
+		return allRow;
+	}
+
+	public void setAllRow(HashMap<String, Word> allRow) {
+		this.allRow =  new HashMap<String, Word>();
+		this.allRow = allRow;
+	}
+
+	public WordInfoUtil generateWordInfo() {
+		WordInfoUtil wordInfoUtil = new WordInfoUtil();
+		for (String engLishWord : getAllRow().keySet()) {
+			
+		}
+		return wordInfoUtil;
 	}
 }
