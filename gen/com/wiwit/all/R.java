@@ -40,8 +40,8 @@ public final class R {
         public static final int new_word=0x7f080005;
         public static final int next_new=0x7f080013;
         public static final int old_word=0x7f080008;
-        public static final int pass_new=0x7f080012;
         public static final int progressBar1=0x7f08001a;
+        public static final int show_new=0x7f080012;
         public static final int spinner1=0x7f080019;
         public static final int start_new=0x7f080010;
         public static final int subTab1=0x7f080018;
