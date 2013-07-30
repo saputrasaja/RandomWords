@@ -1,10 +1,9 @@
 package com.wiwit.acitivity.tab;
 
 import com.wiwit.all.R;
-import com.wiwit.util.DebugHelper;
+import com.wiwit.util.MyApp;
 
 import android.app.Activity;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,15 +12,15 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class NewWordTab extends Activity {
-	TextView englishWord;
-	TextView indonesianWord;
-	Button viewIndonesian;
-	Button next;
-	Button edit;
-	Button done;
-	Button start;
-	ToggleButton toggleNewWord;
-	boolean readyToStart = false;
+	protected TextView englishWord;
+	protected TextView indonesianWord;
+	protected Button viewIndonesian;
+	protected Button next;
+	protected Button edit;
+	protected Button done;
+	protected Button start;
+	protected ToggleButton toggleNewWord;
+	protected boolean readyToStart = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +55,15 @@ public class NewWordTab extends Activity {
 				if (readyToStart) {
 					changeVisibilityElements(true);
 					start.setVisibility(View.INVISIBLE);
+					generateMapNewWord();
 				}
 			}
 		});
+	}
+
+	public void generateMapNewWord() {
+		MyApp appState = ((MyApp) this.getApplicationContext());
+		
 	}
 
 	public void changeVisibilityElements(boolean visibility) {

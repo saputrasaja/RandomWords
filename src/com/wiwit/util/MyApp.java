@@ -1,11 +1,9 @@
 package com.wiwit.util;
 
 import java.util.HashMap;
-
 import com.wiwit.connection.Word;
 import com.wiwit.connection.WordInfoUtil;
 import com.wiwit.connection.WordUtil;
-
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
