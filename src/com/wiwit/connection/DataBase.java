@@ -9,7 +9,7 @@ import com.wiwit.util.MyApp;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DataBase {
-	public static final String DATABASE_NAME = "RandomWordsApp1";
+	public static final String DATABASE_NAME = "RandomWordsApp3";
 
 	public static void initWordFromLocal(SQLiteDatabase sd) {
 		sd.execSQL(Word.getCreatedTableStatment());

@@ -1,6 +1,13 @@
 package com.wiwit.util;
 
 public class StaticData {
+
+	public static String mini = "" + "abduct@_@menculik@_@true@_@false@-@"
+			+ "abhor@_@tidak menyukai@_@true@_@false@-@"
+			+ "abominable@_@buruk sekali@_@true@_@false@-@"
+			+ "abreviation@_@singkatan, kependekan@_@true@_@false@-@"
+			+ "abroad@_@di luar negeri@_@true@_@false@-@"
+			+ "absurd@_@mustahil, tak masuk akal@_@true@_@false@-@";
 	public static String str = ""
 			+ "abduct@_@menculik@_@false@_@false@-@"
 			+ "abhor@_@tidak menyukai@_@false@_@false@-@"

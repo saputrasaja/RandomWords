@@ -105,10 +105,6 @@ public class Word {
 				+ "'";
 		sql2 = sql2 + " WHERE `" + TABLE_NAME + "`.`english_word` = '" + key
 				+ "'";
-		// String sql = "UPDATE " + TABLE_NAME + " SET " + COLUMN_1 + " = '"
-		// + getEnglishWord() + "', " + COLUMN_2 + " = '" + indonesianWord
-		// + "', " + COLUMN_3 + " ='" + getState() + "' WHERE " + COLUMN_1
-		// + " ='" + key + "';";
 		try {
 			DebugHelper.debug(sql2);
 			sd.execSQL(sql2);

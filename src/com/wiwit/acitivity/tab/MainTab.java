@@ -69,30 +69,47 @@ public class MainTab extends TabActivity {
 		DataBase.initWordFromLocal(getSQLite());
 	}
 
-	public void initFirst() {
+	protected void initFirst() {
 		MyApp appState = ((MyApp) this.getApplicationContext());
 		appState.setSd(openOrCreateDatabase(DataBase.DATABASE_NAME,
 				MODE_PRIVATE, null));
-//		 initFirstlyLauncth();
-		getAppState().setAllRow(Word.getAllRow(getSQLite()));
-//		testUpdate();
+		// initFirstlyLauncth();
+		 getAppState().setAllRow(Word.getAllRow(getSQLite()));
+		// testUpdate();
 		checkGlobalVariable();
-	}
-	
-	public void checkGlobalVariable(){
-		MyApp appState = ((MyApp) this.getApplicationContext());
-		DebugHelper.debug("is AppState != null : "+(appState != null));
-		DebugHelper.debug("is SQLite != null : "+(appState.getSd() != null));
-		DebugHelper.debug("is allRowe != null : "+(appState.getAllRow() != null));
+		viewAllData();
 	}
 
-	public void testUpdate() {
+	protected void viewAllData() {
+		MyApp appState = ((MyApp) this.getApplicationContext());
+		DebugHelper.debug("VIEW ALL DATA");
+		for (String key : appState.getAllRow().keySet()) {
+			Word w = appState.getAllRow().get(key);
+			DebugHelper.debug(w.getEnglishWord() + " || "
+					+ w.getIndonesianWord() + " @" + w.getState() + "@ "
+					+ w.isHaveReadNew() + " " + w.isHaveReadOld());
+		}
+	}
+
+	protected void checkGlobalVariable() {
+		MyApp appState = ((MyApp) this.getApplicationContext());
+		DebugHelper.debug("is AppState != null : " + (appState != null));
+		DebugHelper.debug("is SQLite != null : " + (appState.getSd() != null));
+		DebugHelper.debug("is allRowe != null : "
+				+ (appState.getAllRow() != null));
+	}
+
+	protected void testUpdate() {
 		HashMap<String, Word> wordMap = getAppState().getAllRow();
-		DebugHelper.debug(wordMap.get("accuse").getIndonesianWord());
-		DebugHelper.debug(wordMap.get("accuse").getEnglishWord());
-		DebugHelper.debug(wordMap.get("accuse").getState());
-		DebugHelper.debug(wordMap.get("accuse").isHaveReadNew());
-		DebugHelper.debug(wordMap.get("accuse").isHaveReadOld());
+		DebugHelper.debug("indonesian : "
+				+ wordMap.get("accuse").getIndonesianWord());
+		DebugHelper
+				.debug("english : " + wordMap.get("accuse").getEnglishWord());
+		DebugHelper.debug("state : " + wordMap.get("accuse").getState());
+		DebugHelper.debug("isHaveReadNew : "
+				+ wordMap.get("accuse").isHaveReadNew());
+		DebugHelper.debug("isHaveReadOld : "
+				+ wordMap.get("accuse").isHaveReadOld());
 
 		Word w = wordMap.get("accuse");
 		w.setIndonesianWord("tuduh");
@@ -100,7 +117,7 @@ public class MainTab extends TabActivity {
 		w.setHaveReadNew(true);
 		w.setHaveReadOld(true);
 		w.update(getSQLite(), "accuse");
-		
+
 		getAppState().setAllRow(Word.getAllRow(getSQLite()));
 		wordMap = getAppState().getAllRow();
 		DebugHelper.debug(wordMap.get("accuse").getIndonesianWord());

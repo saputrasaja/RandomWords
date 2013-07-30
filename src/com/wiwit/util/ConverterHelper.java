@@ -8,6 +8,7 @@ import com.wiwit.connection.WordUtil;
 public class ConverterHelper {
 
 	public static ArrayList<Word> convertFromString(String str) {
+//		abduct@_@menculik@_@true@_@false@-@
 		ArrayList<Word> words = new ArrayList<Word>();
 		for (String s : str.split("@-@")) {
 			Word w = new Word();
@@ -27,7 +28,7 @@ public class ConverterHelper {
 	}
 
 	public static ArrayList<Word> getFromLocalVariable() {
-		return convertFromString(StaticData.str);
+		return convertFromString(StaticData.mini);
 	}
 
 }
