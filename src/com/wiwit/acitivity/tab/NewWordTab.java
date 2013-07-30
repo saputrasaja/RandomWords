@@ -7,6 +7,7 @@ import com.wiwit.util.MyApp;
 import com.wiwit.util.WordEngine;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -64,7 +65,8 @@ public class NewWordTab extends Activity {
 				if (readyToStart) {
 					changeVisibilityElements(true);
 					start.setVisibility(View.INVISIBLE);
-					// generateMapNewWord();
+					generateEngine();
+					randomWordProcess();
 					show.setVisibility(View.VISIBLE);
 				}
 			}
@@ -75,6 +77,7 @@ public class NewWordTab extends Activity {
 				next.setVisibility(View.VISIBLE);
 				edit.setVisibility(View.VISIBLE);
 				done.setVisibility(View.VISIBLE);
+				indonesianWord.setVisibility(View.VISIBLE);
 			}
 		});
 		next.setOnClickListener(new OnClickListener() {
@@ -83,6 +86,8 @@ public class NewWordTab extends Activity {
 				next.setVisibility(View.INVISIBLE);
 				edit.setVisibility(View.INVISIBLE);
 				done.setVisibility(View.INVISIBLE);
+				show.setVisibility(View.INVISIBLE);
+				engine.nextWord(word);
 			}
 		});
 		done.setOnClickListener(new OnClickListener() {
@@ -93,16 +98,22 @@ public class NewWordTab extends Activity {
 				done.setVisibility(View.INVISIBLE);
 			}
 		});
-
 	}
 
-	private void generateMapNewWord() {
-		MyApp appState = ((MyApp) this.getApplicationContext());
-		engine = WordEngine.getWordsWithState(appState.getAllRow(),
-				WordUtil.NEW.toString(), appState.getSd());
+	protected void randomWordProcess() {
+		word = engine.getRandoWords();
+		englishWord.setText(word.getEnglishWord());
+		indonesianWord.setText(word.getIndonesianWord());
+		indonesianWord.setVisibility(View.INVISIBLE);
 	}
 
-	private void getRandomWord() {
+	protected void generateEngine() {
+		getAppState().setAllRow(Word.getAllRow(getSQLite()));
+		engine = WordEngine.getWordsWithState(getAppState().getAllRow(),
+				WordUtil.NEW.toString(), getAppState().getSd());
+	}
+
+	protected void getRandomWord() {
 		if (engine.getWords().size() > 2
 				|| engine.getWords().size() > (engine.getWords().size() / 2)) {
 			word = engine.getRandoWords();
@@ -112,7 +123,7 @@ public class NewWordTab extends Activity {
 
 	}
 
-	private void changeVisibilityElements(boolean visibility) {
+	protected void changeVisibilityElements(boolean visibility) {
 		int visible = View.INVISIBLE;
 		next.setVisibility(visible);
 		edit.setVisibility(visible);
@@ -123,6 +134,13 @@ public class NewWordTab extends Activity {
 		englishWord.setVisibility(visible);
 		indonesianWord.setVisibility(visible);
 		show.setVisibility(visible);
+	}
 
+	protected MyApp getAppState() {
+		return ((MyApp) this.getApplicationContext());
+	}
+
+	protected SQLiteDatabase getSQLite() {
+		return getAppState().getSd();
 	}
 }

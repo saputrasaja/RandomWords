@@ -43,42 +43,32 @@ public class WordEngine {
 		return this.words.get((int) (Math.random() * (this.words.size())));
 	}
 
-	private void findAndUpdate(String englishWord, String from) {
-		int temp = -1;
-		for (int i = 0; i < words.size(); i++) {
-			if (englishWord.equalsIgnoreCase(words.get(i).getEnglishWord())) {
-				temp = i;
-				break;
+	private void findAndUpdate(Word word, String from) {
+		if (wordState.equals(WordUtil.NEW.toString())) {
+			if (from.equals(NEXT)) {
+				word.setHaveReadNew(true);
+			} else if (from.equals(DONE)) {
+				word.setHaveReadNew(false);
+				word.setState(WordUtil.OLD.toString());
 			}
-		}
-		if (temp >= 0 && temp < words.size()) {
-			Word word = words.get(temp);
-			if (wordState.equals(WordUtil.NEW.toString())) {
-				if (from.equals(NEXT)) {
-					word.setHaveReadNew(true);
-				} else if (from.equals(DONE)) {
-					word.setHaveReadNew(false);
-					word.setState(WordUtil.OLD.toString());
-				}
-				word.update(sqLiteDatabase, englishWord);
-			} else if (wordState.equals(WordUtil.OLD.toString())) {
-				if (from.equals(NEXT)) {
-					word.setHaveReadOld(true);
-				} else if (from.equals(DONE)) {
-					word.setHaveReadOld(false);
-					word.setState(WordUtil.DELETE.toString());
-				}
-				word.update(sqLiteDatabase, englishWord);
+			word.update(sqLiteDatabase, word.getEnglishWord());
+		} else if (wordState.equals(WordUtil.OLD.toString())) {
+			if (from.equals(NEXT)) {
+				word.setHaveReadOld(true);
+			} else if (from.equals(DONE)) {
+				word.setHaveReadOld(false);
+				word.setState(WordUtil.DELETE.toString());
 			}
+			word.update(sqLiteDatabase, word.getEnglishWord());
 		}
 	}
 
-	public void nextWord(String englishWord) {
-		findAndUpdate(englishWord, NEXT);
+	public void nextWord(Word word) {
+		findAndUpdate(word, NEXT);
 	}
 
-	public void doneWord(String englishWord) {
-		findAndUpdate(englishWord, DONE);
+	public void doneWord(Word word) {
+		findAndUpdate(word, DONE);
 	}
 
 	public static WordEngine getWordsWithState(HashMap<String, Word> allWords,

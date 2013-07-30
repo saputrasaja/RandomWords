@@ -89,8 +89,12 @@ public class Word {
 			DebugHelper.debug(insertSql2);
 			sd.execSQL(insertSql2);
 		} catch (Exception e) {
-			DebugHelper.exception(this, e);
-			System.exit(0);
+			DebugHelper.exception("can't input "+getEnglishWord(), e);
+			try {
+				update(sd, getEnglishWord());
+			} catch (Exception ee) {
+				DebugHelper.exception("can't update "+getEnglishWord(), ee);
+			}
 		}
 	}
 

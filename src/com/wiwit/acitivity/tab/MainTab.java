@@ -65,7 +65,6 @@ public class MainTab extends TabActivity {
 	}
 
 	protected void initFirstlyLauncth() {
-		getSQLite().execSQL(Word.getCreatedTableStatment());
 		DataBase.initWordFromLocal(getSQLite());
 	}
 
@@ -73,7 +72,7 @@ public class MainTab extends TabActivity {
 		MyApp appState = ((MyApp) this.getApplicationContext());
 		appState.setSd(openOrCreateDatabase(DataBase.DATABASE_NAME,
 				MODE_PRIVATE, null));
-		// initFirstlyLauncth();
+		 initFirstlyLauncth();
 		 getAppState().setAllRow(Word.getAllRow(getSQLite()));
 		// testUpdate();
 		checkGlobalVariable();

@@ -42,7 +42,7 @@ public class DebugHelper {
 	}
 
 	protected void doException(Exception e) {
-		Log.wtf(getDebugName(), generateMessage());
+		Log.wtf(getDebugName(), generateMessage() + " : " + e.getMessage());
 		e.printStackTrace();
 	}
 
@@ -60,9 +60,14 @@ public class DebugHelper {
 		DebugHelper db = new DebugHelper(o, null);
 		db.doException(e);
 	}
-	
+
 	public static void exception(Exception e) {
 		DebugHelper db = new DebugHelper(null, null);
+		db.doException(e);
+	}
+
+	public static void exception(String msg, Exception e) {
+		DebugHelper db = new DebugHelper(null, msg);
 		db.doException(e);
 	}
 }
