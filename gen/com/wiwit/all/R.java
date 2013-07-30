@@ -24,22 +24,25 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int LinearLayout01=0x7f08000c;
-        public static final int action_settings=0x7f080010;
-        public static final int delete_word=0x7f08000a;
-        public static final int editText1=0x7f08000b;
-        public static final int info_delete_word=0x7f080009;
+        public static final int LinearLayout01=0x7f08000f;
+        public static final int action_settings=0x7f080013;
+        public static final int delete_word=0x7f08000b;
+        public static final int editText1=0x7f08000e;
+        public static final int info_btn_refresh=0x7f08000d;
+        public static final int info_delete_word=0x7f08000a;
         public static final int info_new_word=0x7f080004;
         public static final int info_old_word=0x7f080007;
         public static final int info_total_word=0x7f080001;
         public static final int new_word=0x7f080005;
         public static final int old_word=0x7f080008;
-        public static final int progressBar1=0x7f08000f;
-        public static final int spinner1=0x7f08000e;
-        public static final int subTab1=0x7f08000d;
+        public static final int progressBar1=0x7f080012;
+        public static final int spinner1=0x7f080011;
+        public static final int subTab1=0x7f080010;
         public static final int tableRow1=0x7f080000;
         public static final int tableRow2=0x7f080003;
         public static final int tableRow3=0x7f080006;
+        public static final int tableRow4=0x7f080009;
+        public static final int tableRow5=0x7f08000c;
         public static final int total_word=0x7f080002;
     }
     public static final class layout {
@@ -57,7 +60,13 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
+        public static final int btn_text_refresh=0x7f050008;
         public static final int hello_world=0x7f050002;
+        public static final int tv_delete_word=0x7f050007;
+        public static final int tv_new_word=0x7f050005;
+        public static final int tv_old_word=0x7f050006;
+        public static final int tv_total_word=0x7f050004;
+        public static final int zero_value=0x7f050003;
     }
     public static final class style {
         /** 

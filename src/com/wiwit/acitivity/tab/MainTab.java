@@ -77,6 +77,14 @@ public class MainTab extends TabActivity {
 //		 initFirstlyLauncth();
 		getAppState().setAllRow(Word.getAllRow(getSQLite()));
 //		testUpdate();
+		checkGlobalVariable();
+	}
+	
+	public void checkGlobalVariable(){
+		MyApp appState = ((MyApp) this.getApplicationContext());
+		DebugHelper.debug("is AppState != null : "+(appState != null));
+		DebugHelper.debug("is SQLite != null : "+(appState.getSd() != null));
+		DebugHelper.debug("is allRowe != null : "+(appState.getAllRow() != null));
 	}
 
 	public void testUpdate() {

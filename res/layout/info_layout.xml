@@ -7,13 +7,14 @@
     <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp" >
 
         <TextView
             android:id="@+id/info_total_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Words "
+            android:text="@string/tv_total_word"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp" />
 
@@ -21,9 +22,11 @@
             android:id="@+id/total_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:paddingLeft="20dp"
+            android:text="@string/zero_value"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp" />
+
     </TableRow>
 
     <TableRow
@@ -35,7 +38,7 @@
             android:id="@+id/info_new_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New Words"
+            android:text="@string/tv_new_word"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp" />
 
@@ -43,7 +46,8 @@
             android:id="@+id/new_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:paddingLeft="20dp"
+            android:text="@string/zero_value"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp" />
     </TableRow>
@@ -57,7 +61,8 @@
             android:id="@+id/info_old_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Old Words "
+            
+            android:text="@string/tv_old_word"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp" />
 
@@ -65,13 +70,14 @@
             android:id="@+id/old_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:paddingLeft="20dp"
+            android:text="@string/zero_value"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp" />
     </TableRow>
 
     <TableRow
-        android:id="@+id/tableRow3"
+        android:id="@+id/tableRow4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -79,7 +85,7 @@
             android:id="@+id/info_delete_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Deleted Words "
+            android:text="@string/tv_delete_word"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp" />
 
@@ -87,9 +93,23 @@
             android:id="@+id/delete_word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:paddingLeft="20dp"
+            android:text="@string/zero_value"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp" >
+
+        <Button
+            android:id="@+id/info_btn_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_text_refresh" />
     </TableRow>
 
 </TableLayout>

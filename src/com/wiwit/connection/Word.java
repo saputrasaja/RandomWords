@@ -78,9 +78,6 @@ public class Word {
 
 	public void insert(SQLiteDatabase sd) {
 		try {
-			// String countSql =
-			// "SELECT count(*) FROM `words` where english_word ='"
-			// + w.getEnglishWord() + "'";
 			String insertSql2 = "INSERT INTO '" + TABLE_NAME + "'";
 			insertSql2 = insertSql2 + " (`" + COLUMN_1 + "`, `" + COLUMN_2
 					+ "`, `" + COLUMN_3 + "`, `" + COLUMN_4 + "`, `" + COLUMN_5
@@ -89,10 +86,6 @@ public class Word {
 					+ getIndonesianWord() + "', '" + getState() + "','"
 					+ (isHaveReadNew() ? 1 : 0) + "','"
 					+ (isHaveReadOld() ? 1 : 0) + "');";
-			// String insertSql = "INSERT INTO " + TABLE_NAME
-			// + " (`english_word` ,`indonesian_word` ,`state`)VALUES "
-			// + "('" + w.getEnglishWord() + "', '"
-			// + w.getIndonesianWord() + "', '" + w.getState() + "');";
 			DebugHelper.debug(insertSql2);
 			sd.execSQL(insertSql2);
 		} catch (Exception e) {
