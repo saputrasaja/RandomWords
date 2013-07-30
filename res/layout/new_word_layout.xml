@@ -14,7 +14,9 @@
             android:id="@+id/toggle_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ToggleButton" />
+            android:text="ToggleButton"
+            android:textOff="Lets Play"
+            android:textOn="Restart.." />
 
         <TextView
             android:id="@+id/english_new"
@@ -33,18 +35,18 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/pass_new"
+            android:id="@+id/start_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pass" />
+            android:text="Start" />
 
         <TextView
             android:id="@+id/indonesian_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="40dp"
             android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" 
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp" />
 
     </TableRow>
@@ -56,6 +58,19 @@
         android:layout_marginTop="150dp" >
 
         <Button
+            android:id="@+id/pass_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
             android:id="@+id/next_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -65,16 +80,15 @@
             android:id="@+id/done_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
+            android:layout_marginLeft="65dp"
             android:text="Done" />
 
         <Button
             android:id="@+id/edit_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="65dp"
             android:text="Edit" />
-
     </TableRow>
 
 </LinearLayout>

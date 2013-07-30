@@ -24,12 +24,12 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int LinearLayout01=0x7f080016;
-        public static final int action_settings=0x7f08001a;
+        public static final int LinearLayout01=0x7f080017;
+        public static final int action_settings=0x7f08001b;
         public static final int delete_word=0x7f08000b;
-        public static final int done_new=0x7f080013;
-        public static final int editText1=0x7f080015;
-        public static final int edit_new=0x7f080014;
+        public static final int done_new=0x7f080014;
+        public static final int editText1=0x7f080016;
+        public static final int edit_new=0x7f080015;
         public static final int english_new=0x7f08000f;
         public static final int indonesian_new=0x7f080011;
         public static final int info_btn_refresh=0x7f08000d;
@@ -38,12 +38,13 @@ public final class R {
         public static final int info_old_word=0x7f080007;
         public static final int info_total_word=0x7f080001;
         public static final int new_word=0x7f080005;
-        public static final int next_new=0x7f080012;
+        public static final int next_new=0x7f080013;
         public static final int old_word=0x7f080008;
-        public static final int pass_new=0x7f080010;
-        public static final int progressBar1=0x7f080019;
-        public static final int spinner1=0x7f080018;
-        public static final int subTab1=0x7f080017;
+        public static final int pass_new=0x7f080012;
+        public static final int progressBar1=0x7f08001a;
+        public static final int spinner1=0x7f080019;
+        public static final int start_new=0x7f080010;
+        public static final int subTab1=0x7f080018;
         public static final int tableRow1=0x7f080000;
         public static final int tableRow2=0x7f080003;
         public static final int tableRow3=0x7f080006;
