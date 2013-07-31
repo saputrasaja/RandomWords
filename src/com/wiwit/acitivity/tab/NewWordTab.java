@@ -30,6 +30,7 @@ public class NewWordTab extends Activity {
 	protected boolean readyToStart = false;
 	protected WordEngine engine;
 	protected Word word;
+	protected AlertDialog.Builder restartDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,23 +44,39 @@ public class NewWordTab extends Activity {
 		done = (Button) findViewById(R.id.done_new);
 		start = (Button) findViewById(R.id.start_new);
 		changeVisibilityElements(false);
-		start.setVisibility(View.INVISIBLE);
 		toggleNewWord = (ToggleButton) findViewById(R.id.toggle_new);
+		restartDialog = new AlertDialog.Builder(this);
 		setListener();
+		start.setVisibility(View.INVISIBLE);
 	}
 
 	protected void setListener() {
+		restartDialog.setMessage("Wanna restart all new words ?");
+		DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					changeVisibilityElements(false);
+					start.setVisibility(View.INVISIBLE);
+					readyToStart = false;
+					break;
+				case DialogInterface.BUTTON_NEGATIVE:
+					toggleNewWord.setChecked(true);
+					break;
+				}
+			}
+		};
+		restartDialog.setPositiveButton("Yes", dialogListener);
+		restartDialog.setNegativeButton("No", dialogListener);
 		toggleNewWord.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (toggleNewWord.isChecked()) {
 					start.setVisibility(View.VISIBLE);
 					readyToStart = true;
-
 				} else {
-					changeVisibilityElements(false);
-					start.setVisibility(View.INVISIBLE);
-					readyToStart = false;
+					restartDialog.show();
 				}
 			}
 		});
@@ -81,6 +98,7 @@ public class NewWordTab extends Activity {
 					edit.setVisibility(View.VISIBLE);
 					done.setVisibility(View.VISIBLE);
 					indonesianWord.setVisibility(View.VISIBLE);
+					show.setVisibility(View.INVISIBLE);
 				}
 			}
 		});
