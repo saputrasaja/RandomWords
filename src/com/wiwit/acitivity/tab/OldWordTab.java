@@ -1,5 +1,7 @@
 package com.wiwit.acitivity.tab;
 
+import com.wiwit.all.R;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -9,11 +11,7 @@ public class OldWordTab extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		/* Second Tab Content */
-		TextView textView = new TextView(this);
-		textView.setText("Second Tab");
-		setContentView(textView);
+		setContentView(R.layout.old_word_layout);
 
 	}
 }

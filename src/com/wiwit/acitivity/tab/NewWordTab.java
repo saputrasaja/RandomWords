@@ -32,6 +32,7 @@ public class NewWordTab extends Activity {
 	protected Word word;
 	protected AlertDialog.Builder restartDialog;
 	protected AlertDialog.Builder moveToOldDialog;
+	protected TextView moveToTextView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class NewWordTab extends Activity {
 		next = (Button) findViewById(R.id.next_new);
 		edit = (Button) findViewById(R.id.edit_new);
 		moveToOld = (Button) findViewById(R.id.move_to_old);
+		moveToTextView = (TextView) findViewById(R.id.move_to_tv_new);
 		start = (Button) findViewById(R.id.start_new);
 		changeVisibilityElements(false);
 		toggleNewWord = (ToggleButton) findViewById(R.id.toggle_new);
@@ -117,6 +119,7 @@ public class NewWordTab extends Activity {
 					edit.setVisibility(View.VISIBLE);
 					moveToOld.setVisibility(View.VISIBLE);
 					indonesianWord.setVisibility(View.VISIBLE);
+					moveToTextView.setVisibility(View.VISIBLE);
 					show.setVisibility(View.INVISIBLE);
 				}
 			}
@@ -140,6 +143,7 @@ public class NewWordTab extends Activity {
 		next.setVisibility(View.INVISIBLE);
 		edit.setVisibility(View.INVISIBLE);
 		moveToOld.setVisibility(View.INVISIBLE);
+		moveToTextView.setVisibility(View.INVISIBLE);
 		show.setVisibility(View.INVISIBLE);
 		DebugHelper.debug("doNexOrDone : " + engine.canRandomWord());
 		if (engine.canRandomWord()) {
@@ -169,16 +173,17 @@ public class NewWordTab extends Activity {
 	}
 
 	protected void changeVisibilityElements(boolean visibility) {
-		int visible = View.INVISIBLE;
-		next.setVisibility(visible);
-		edit.setVisibility(visible);
-		moveToOld.setVisibility(visible);
+		int isVisible = View.INVISIBLE;
+		next.setVisibility(isVisible);
+		edit.setVisibility(isVisible);
+		moveToOld.setVisibility(isVisible);
+		moveToTextView.setVisibility(isVisible);
 		if (visibility) {
-			visible = View.VISIBLE;
+			isVisible = View.VISIBLE;
 		}
-		englishWord.setVisibility(visible);
-		indonesianWord.setVisibility(visible);
-		show.setVisibility(visible);
+		englishWord.setVisibility(isVisible);
+		indonesianWord.setVisibility(isVisible);
+		show.setVisibility(isVisible);
 	}
 
 	protected MyApp getAppState() {
