@@ -38,6 +38,7 @@ public class NewWordTab extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_word_layout);
+		// findBViewById
 		englishWord = (TextView) findViewById(R.id.english_new);
 		indonesianWord = (TextView) findViewById(R.id.indonesian_new);
 		show = (Button) findViewById(R.id.show_new);
@@ -46,12 +47,21 @@ public class NewWordTab extends Activity {
 		moveToOld = (Button) findViewById(R.id.move_to_old);
 		moveToTextView = (TextView) findViewById(R.id.move_to_tv_in_new);
 		start = (Button) findViewById(R.id.start_new);
-		changeVisibilityElements(false);
 		toggleNewWord = (ToggleButton) findViewById(R.id.toggle_new);
+		// Set Visibility
+		englishWord.setVisibility(View.INVISIBLE);
+		indonesianWord.setVisibility(View.INVISIBLE);
+		show.setVisibility(View.INVISIBLE);
+		next.setVisibility(View.INVISIBLE);
+		edit.setVisibility(View.INVISIBLE);
+		moveToOld.setVisibility(View.INVISIBLE);
+		moveToTextView.setVisibility(View.INVISIBLE);
+		start.setVisibility(View.INVISIBLE);
+		// init other component
 		restartDialog = new AlertDialog.Builder(this);
 		moveToOldDialog = new AlertDialog.Builder(this);
 		setListener();
-		start.setVisibility(View.INVISIBLE);
+
 	}
 
 	protected void setListener() {
@@ -61,8 +71,14 @@ public class NewWordTab extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case DialogInterface.BUTTON_POSITIVE:
-					changeVisibilityElements(false);
+					next.setVisibility(View.INVISIBLE);
+					edit.setVisibility(View.INVISIBLE);
+					moveToOld.setVisibility(View.INVISIBLE);
+					moveToTextView.setVisibility(View.INVISIBLE);
 					start.setVisibility(View.INVISIBLE);
+					englishWord.setVisibility(View.INVISIBLE);
+					indonesianWord.setVisibility(View.INVISIBLE);
+					show.setVisibility(View.INVISIBLE);
 					readyToStart = false;
 					engine.restartWord();
 					break;
@@ -170,20 +186,6 @@ public class NewWordTab extends Activity {
 		getAppState().setAllRow(Word.getAllRow(getSQLite()));
 		engine = WordEngine.generateWordEngine(getAppState().getAllRow(),
 				WordUtil.NEW.toString(), getAppState().getSd());
-	}
-
-	protected void changeVisibilityElements(boolean visibility) {
-		int isVisible = View.INVISIBLE;
-		next.setVisibility(isVisible);
-		edit.setVisibility(isVisible);
-		moveToOld.setVisibility(isVisible);
-		moveToTextView.setVisibility(isVisible);
-		if (visibility) {
-			isVisible = View.VISIBLE;
-		}
-		englishWord.setVisibility(isVisible);
-		indonesianWord.setVisibility(isVisible);
-		show.setVisibility(isVisible);
 	}
 
 	protected MyApp getAppState() {
