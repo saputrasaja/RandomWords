@@ -7,7 +7,14 @@ public class StaticData {
 			+ "abominable@_@buruk sekali@_@true@_@false@-@"
 			+ "abreviation@_@singkatan, kependekan@_@true@_@false@-@"
 			+ "abroad@_@di luar negeri@_@true@_@false@-@"
-			+ "absurd@_@mustahil, tak masuk akal@_@true@_@false@-@";
+			+ "absurd@_@mustahil, tak masuk akal@_@true@_@false@-@"
+			+ "convey@_@menyampaikan@_@false@_@false@-@"
+			+ "convict@_@narapidana@_@false@_@true@-@"
+			+ "convince@_@meyakinkan@_@false@_@false@-@"
+			+ "cope@_@mengatasi, menguasai@_@false@_@false@-@"
+			+ "cord@_@kawat@_@false@_@falsee@-@"
+			+ "corpse@_@mayat, jenazah@_@false@_@true@-@";
+	
 	public static String str = ""
 			+ "abduct@_@menculik@_@false@_@false@-@"
 			+ "abhor@_@tidak menyukai@_@false@_@false@-@"

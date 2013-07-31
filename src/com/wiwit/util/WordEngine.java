@@ -40,9 +40,9 @@ public class WordEngine {
 	}
 
 	public boolean canRandomWord() {
-//		DebugHelper.debug("canRandomWord");
-//		DebugHelper.debug(getWords().size() > 2);
-//		DebugHelper.debug(getWords().size() > (getWords().size() / 2));
+		// DebugHelper.debug("canRandomWord");
+		// DebugHelper.debug(getWords().size() > 2);
+		// DebugHelper.debug(getWords().size() > (getWords().size() / 2));
 		if (getWords().size() > 2
 				|| getWords().size() > (getWords().size() / 2)) {
 			return true;
@@ -58,7 +58,7 @@ public class WordEngine {
 	}
 
 	private void findAndUpdate(Word word, String from) {
-//		DebugHelper.debug("findAndUpdate");
+		// DebugHelper.debug("findAndUpdate");
 		if (wordState.equals(WordUtil.NEW.toString())) {
 			DebugHelper.debug("NEW");
 			if (from.equals(NEXT)) {
@@ -69,7 +69,7 @@ public class WordEngine {
 				word.setHaveReadNew(false);
 				word.setState(WordUtil.OLD.toString());
 			}
-//			DebugHelper.debug("ready to update");
+			// DebugHelper.debug("ready to update");
 			word.update(sqLiteDatabase, word.getEnglishWord());
 			remove(word);
 		} else if (wordState.equals(WordUtil.OLD.toString())) {
@@ -82,7 +82,7 @@ public class WordEngine {
 				word.setHaveReadOld(false);
 				word.setState(WordUtil.DELETE.toString());
 			}
-//			DebugHelper.debug("ready to update");
+			// DebugHelper.debug("ready to update");
 			word.update(sqLiteDatabase, word.getEnglishWord());
 			remove(word);
 		}
@@ -107,7 +107,7 @@ public class WordEngine {
 		findAndUpdate(word, DONE);
 	}
 
-	public static WordEngine getWordsWithState(HashMap<String, Word> allWords,
+	public static WordEngine generateWordEngine(HashMap<String, Word> allWords,
 			String state, SQLiteDatabase sqLiteDatabase) {
 		List<Word> result = new ArrayList<Word>();
 		for (String key : allWords.keySet()) {
@@ -119,10 +119,6 @@ public class WordEngine {
 				} else if (state.equals(WordUtil.OLD.toString())) {
 					alredyRead = word.isHaveReadOld();
 				}
-//				DebugHelper.debug("each row iterate " + word.getEnglishWord()
-//						+ " => " + word.isHaveReadNew() + " | "
-//						+ word.isHaveReadOld());
-//				DebugHelper.debug(!alredyRead);
 				if (!alredyRead) {
 					result.add(word);
 				}
@@ -132,8 +128,23 @@ public class WordEngine {
 		engine.setSqLiteDatabase(sqLiteDatabase);
 		engine.setWordState(state);
 		engine.setWords(result);
-//		DebugHelper.debug("after generate engine");
-//		DebugHelper.debug("size : " + engine.words.size());
 		return engine;
+	}
+
+	public void restartWord() {
+		HashMap<String, Word> words = Word.getAllRow(this.sqLiteDatabase);
+		for (String key : words.keySet()) {
+			Word word = words.get(key);
+			if (word.getState().equals(this.wordState)) {
+				if (word.getState().equals(WordUtil.NEW.toString())) {
+					word.setHaveReadNew(false);
+				} else if (word.getState().equals(WordUtil.OLD.toString())) {
+					word.setHaveReadOld(false);
+				}
+				word.update(sqLiteDatabase, word.getEnglishWord());
+			}
+		}
+		setWords(generateWordEngine(Word.getAllRow(this.sqLiteDatabase),
+				this.wordState, this.sqLiteDatabase).getWords());
 	}
 }

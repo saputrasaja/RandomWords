@@ -11,7 +11,7 @@
         android:layout_marginTop="20dp" >
 
         <ToggleButton
-            android:id="@+id/toggle_new"
+            android:id="@+id/toggle_old"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ToggleButton"
@@ -19,7 +19,7 @@
             android:textOn="Restart.." />
 
         <TextView
-            android:id="@+id/english_new"
+            android:id="@+id/english_old"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -35,17 +35,17 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/start_new"
+            android:id="@+id/start_old"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Start" />
 
         <TextView
-            android:id="@+id/indonesian_new"
+            android:id="@+id/indonesian_old"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:height="180dp"
+            android:height="200dp"
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp"
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/show_new"
+            android:id="@+id/show_old"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Show" />
@@ -72,16 +72,16 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/next_new"
+            android:id="@+id/next_old"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Next" />
 
         <Button
-            android:id="@+id/edit_new"
+            android:id="@+id/edit_old"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="195dp"
+            android:layout_marginLeft="185dp"
             android:text="Edit" />
     </TableRow>
 
@@ -91,11 +91,11 @@
         android:layout_height="wrap_content" >
 
         <Button
-            android:id="@+id/move_to_old"
+            android:id="@+id/move_to_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="110dp"
-            android:text="Move To Old" />
+            android:layout_marginLeft="65dp"
+            android:text="Move To New" />
 
     </TableRow>
 

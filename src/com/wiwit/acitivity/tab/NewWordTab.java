@@ -24,13 +24,14 @@ public class NewWordTab extends Activity {
 	protected Button show;
 	protected Button next;
 	protected Button edit;
-	protected Button done;
+	protected Button moveToOld;
 	protected Button start;
 	protected ToggleButton toggleNewWord;
 	protected boolean readyToStart = false;
 	protected WordEngine engine;
 	protected Word word;
 	protected AlertDialog.Builder restartDialog;
+	protected AlertDialog.Builder moveToOldDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,18 +42,19 @@ public class NewWordTab extends Activity {
 		show = (Button) findViewById(R.id.show_new);
 		next = (Button) findViewById(R.id.next_new);
 		edit = (Button) findViewById(R.id.edit_new);
-		done = (Button) findViewById(R.id.done_new);
+		moveToOld = (Button) findViewById(R.id.move_to_old);
 		start = (Button) findViewById(R.id.start_new);
 		changeVisibilityElements(false);
 		toggleNewWord = (ToggleButton) findViewById(R.id.toggle_new);
 		restartDialog = new AlertDialog.Builder(this);
+		moveToOldDialog = new AlertDialog.Builder(this);
 		setListener();
 		start.setVisibility(View.INVISIBLE);
 	}
 
 	protected void setListener() {
 		restartDialog.setMessage("Wanna restart all new words ?");
-		DialogInterface.OnClickListener dialogListener = new DialogInterface.OnClickListener() {
+		DialogInterface.OnClickListener restartdialogListener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
@@ -60,6 +62,7 @@ public class NewWordTab extends Activity {
 					changeVisibilityElements(false);
 					start.setVisibility(View.INVISIBLE);
 					readyToStart = false;
+					engine.restartWord();
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
 					toggleNewWord.setChecked(true);
@@ -67,8 +70,24 @@ public class NewWordTab extends Activity {
 				}
 			}
 		};
-		restartDialog.setPositiveButton("Yes", dialogListener);
-		restartDialog.setNegativeButton("No", dialogListener);
+		restartDialog.setPositiveButton("Yes", restartdialogListener);
+		restartDialog.setNegativeButton("No", restartdialogListener);
+		moveToOldDialog.setMessage("Move to OLD state for this word ?");
+		DialogInterface.OnClickListener moveToOldDialogListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					engine.doneWord(word);
+					doNexOrDone();
+					break;
+				case DialogInterface.BUTTON_NEGATIVE:
+					break;
+				}
+			}
+		};
+		moveToOldDialog.setPositiveButton("Yes", moveToOldDialogListener);
+		moveToOldDialog.setNegativeButton("No", moveToOldDialogListener);
 		toggleNewWord.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -96,7 +115,7 @@ public class NewWordTab extends Activity {
 				if (engine.canRandomWord()) {
 					next.setVisibility(View.VISIBLE);
 					edit.setVisibility(View.VISIBLE);
-					done.setVisibility(View.VISIBLE);
+					moveToOld.setVisibility(View.VISIBLE);
 					indonesianWord.setVisibility(View.VISIBLE);
 					show.setVisibility(View.INVISIBLE);
 				}
@@ -109,11 +128,10 @@ public class NewWordTab extends Activity {
 				doNexOrDone();
 			}
 		});
-		done.setOnClickListener(new OnClickListener() {
+		moveToOld.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				engine.doneWord(word);
-				doNexOrDone();
+				moveToOldDialog.show();
 			}
 		});
 	}
@@ -121,7 +139,7 @@ public class NewWordTab extends Activity {
 	protected void doNexOrDone() {
 		next.setVisibility(View.INVISIBLE);
 		edit.setVisibility(View.INVISIBLE);
-		done.setVisibility(View.INVISIBLE);
+		moveToOld.setVisibility(View.INVISIBLE);
 		show.setVisibility(View.INVISIBLE);
 		DebugHelper.debug("doNexOrDone : " + engine.canRandomWord());
 		if (engine.canRandomWord()) {
@@ -146,7 +164,7 @@ public class NewWordTab extends Activity {
 
 	protected void generateEngine() {
 		getAppState().setAllRow(Word.getAllRow(getSQLite()));
-		engine = WordEngine.getWordsWithState(getAppState().getAllRow(),
+		engine = WordEngine.generateWordEngine(getAppState().getAllRow(),
 				WordUtil.NEW.toString(), getAppState().getSd());
 	}
 
@@ -154,7 +172,7 @@ public class NewWordTab extends Activity {
 		int visible = View.INVISIBLE;
 		next.setVisibility(visible);
 		edit.setVisibility(visible);
-		done.setVisibility(visible);
+		moveToOld.setVisibility(visible);
 		if (visibility) {
 			visible = View.VISIBLE;
 		}

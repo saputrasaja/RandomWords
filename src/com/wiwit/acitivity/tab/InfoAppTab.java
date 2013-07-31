@@ -53,14 +53,14 @@ public class InfoAppTab extends Activity {
 	public void refreshInfo() {
 		try {
 			getAppState().viewAllData();
-			DebugHelper.debug("refreshInfo");
-			DebugHelper.debug("size : " + getAppState().getAllRow().size());
+//			DebugHelper.debug("refreshInfo");
+//			DebugHelper.debug("size : " + getAppState().getAllRow().size());
 			WordInfoUtil wiu = getAppState().generateWordInfo();
 			all.setText(" : " + wiu.getAllWord());
 			newWord.setText(" : " + wiu.getNewWord());
 			oldWord.setText(" : " + wiu.getOldWord());
 			deleteWord.setText(" : " + wiu.getDeleted());
-			DebugHelper.debug("after init");
+//			DebugHelper.debug("after init");
 		} catch (Exception e) {
 			DebugHelper.debug("can't refreshInfo");
 			DebugHelper.exception(this, e);

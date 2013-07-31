@@ -72,7 +72,7 @@ public class Word {
 				+ "` varchar(16) NOT NULL, `" + COLUMN_4
 				+ "` tinyint(1) NOT NULL, `" + COLUMN_5
 				+ "` tinyint(1) NOT NULL, PRIMARY KEY (`" + COLUMN_1 + "`))";
-		DebugHelper.debug(sql);
+//		DebugHelper.debug(sql);
 		return sql;
 	}
 
@@ -86,7 +86,7 @@ public class Word {
 					+ getIndonesianWord() + "', '" + getState() + "','"
 					+ (isHaveReadNew() ? 1 : 0) + "','"
 					+ (isHaveReadOld() ? 1 : 0) + "');";
-			DebugHelper.debug(insertSql2);
+//			DebugHelper.debug(insertSql2);
 			sd.execSQL(insertSql2);
 		} catch (Exception e) {
 			DebugHelper.exception("can't input "+getEnglishWord(), e);
@@ -110,9 +110,8 @@ public class Word {
 		sql2 = sql2 + " WHERE `" + TABLE_NAME + "`.`english_word` = '" + key
 				+ "'";
 		try {
-			DebugHelper.debug(sql2);
+//			DebugHelper.debug(sql2);
 			sd.execSQL(sql2);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			DebugHelper.exception(e);
