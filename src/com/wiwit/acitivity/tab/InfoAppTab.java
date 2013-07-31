@@ -7,6 +7,8 @@ import com.wiwit.util.DebugHelper;
 import com.wiwit.util.MyApp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Debug;
@@ -63,5 +65,18 @@ public class InfoAppTab extends Activity {
 			DebugHelper.debug("can't refreshInfo");
 			DebugHelper.exception(this, e);
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this)
+				.setMessage("Are you sure you want to exit?")
+				.setCancelable(false)
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								InfoAppTab.this.finish();
+							}
+						}).setNegativeButton("No", null).show();
 	}
 }

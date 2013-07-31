@@ -8,8 +8,9 @@ import com.wiwit.util.MyApp;
 import com.wiwit.util.WordEngine;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,7 +55,7 @@ public class NewWordTab extends Activity {
 				if (toggleNewWord.isChecked()) {
 					start.setVisibility(View.VISIBLE);
 					readyToStart = true;
-					
+
 				} else {
 					changeVisibilityElements(false);
 					start.setVisibility(View.INVISIBLE);
@@ -150,5 +151,18 @@ public class NewWordTab extends Activity {
 
 	protected SQLiteDatabase getSQLite() {
 		return getAppState().getSd();
+	}
+
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this)
+				.setMessage("Are you sure you want to exit?")
+				.setCancelable(false)
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								NewWordTab.this.finish();
+							}
+						}).setNegativeButton("No", null).show();
 	}
 }

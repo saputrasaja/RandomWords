@@ -9,7 +9,9 @@ import com.wiwit.connection.WordUtil;
 import com.wiwit.util.DebugHelper;
 import com.wiwit.util.MyApp;
 
+import android.app.AlertDialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -72,13 +74,13 @@ public class MainTab extends TabActivity {
 		MyApp appState = ((MyApp) this.getApplicationContext());
 		appState.setSd(openOrCreateDatabase(DataBase.DATABASE_NAME,
 				MODE_PRIVATE, null));
-		 initFirstlyLauncth();
-		 getAppState().setAllRow(Word.getAllRow(getSQLite()));
+		initFirstlyLauncth();
+		getAppState().setAllRow(Word.getAllRow(getSQLite()));
 		// testUpdate();
 		checkGlobalVariable();
 	}
 
-   protected void checkGlobalVariable() {
+	protected void checkGlobalVariable() {
 		MyApp appState = ((MyApp) this.getApplicationContext());
 		DebugHelper.debug("is AppState != null : " + (appState != null));
 		DebugHelper.debug("is SQLite != null : " + (appState.getSd() != null));
