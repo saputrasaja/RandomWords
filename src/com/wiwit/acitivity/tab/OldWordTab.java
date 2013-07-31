@@ -6,7 +6,10 @@ import com.wiwit.util.WordEngine;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -17,7 +20,8 @@ public class OldWordTab extends Activity {
 	protected Button show;
 	protected Button next;
 	protected Button edit;
-	protected Button moveToOld;
+	protected Button moveToNew;
+	protected Button moveToDel;
 	protected Button start;
 	protected ToggleButton toggleOldWord;
 	protected boolean readyToStart = false;
@@ -37,12 +41,87 @@ public class OldWordTab extends Activity {
 		show = (Button) findViewById(R.id.show_old);
 		next = (Button) findViewById(R.id.next_old);
 		edit = (Button) findViewById(R.id.edit_old);
-		moveToOld = (Button) findViewById(R.id.move_to_old);
+		moveToNew = (Button) findViewById(R.id.move_to_new);
+		moveToDel = (Button) findViewById(R.id.move_to_del);
 		moveToTextView = (TextView) findViewById(R.id.move_to_tv_in_old);
 		start = (Button) findViewById(R.id.start_old);
 		toggleOldWord = (ToggleButton) findViewById(R.id.toggle_old);
 		restartDialog = new AlertDialog.Builder(this);
 		moveToNewDialog = new AlertDialog.Builder(this);
 		moveToDelDialog = new AlertDialog.Builder(this);
+		initListener();
+	}
+
+	private void initListener() {
+		restartDialog.setMessage("Wanna restart all new words ?");
+		DialogInterface.OnClickListener restartDialogListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					break;
+				case DialogInterface.BUTTON_NEGATIVE:
+					break;
+				}
+			}
+		};
+		restartDialog.setPositiveButton("Yes", restartDialogListener);
+		restartDialog.setNegativeButton("No", restartDialogListener);
+		DialogInterface.OnClickListener moveToNewListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					break;
+				case DialogInterface.BUTTON_NEGATIVE:
+					break;
+				}
+			}
+		};
+		moveToNewDialog.setPositiveButton("Yes", moveToNewListener);
+		moveToNewDialog.setNegativeButton("No", moveToNewListener);
+		DialogInterface.OnClickListener moveToDelListener = new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case DialogInterface.BUTTON_POSITIVE:
+					break;
+				case DialogInterface.BUTTON_NEGATIVE:
+					break;
+				}
+			}
+		};
+		moveToDelDialog.setPositiveButton("Yes", moveToDelListener);
+		moveToDelDialog.setNegativeButton("No", moveToDelListener);
+		toggleOldWord.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			}
+		});
+		start.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			}
+		});
+		next.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			}
+		});
+		edit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			}
+		});
+		moveToNew.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			}
+		});
+		moveToDel.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			}
+		});
 	}
 }
