@@ -44,7 +44,7 @@ public class NewWordTab extends Activity {
 		next = (Button) findViewById(R.id.next_new);
 		edit = (Button) findViewById(R.id.edit_new);
 		moveToOld = (Button) findViewById(R.id.move_to_old);
-		moveToTextView = (TextView) findViewById(R.id.move_to_tv_new);
+		moveToTextView = (TextView) findViewById(R.id.move_to_tv_in_new);
 		start = (Button) findViewById(R.id.start_new);
 		changeVisibilityElements(false);
 		toggleNewWord = (ToggleButton) findViewById(R.id.toggle_new);

@@ -24,8 +24,8 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int LinearLayout01=0x7f080021;
-        public static final int action_settings=0x7f080025;
+        public static final int LinearLayout01=0x7f080022;
+        public static final int action_settings=0x7f080026;
         public static final int delete_word=0x7f08000b;
         public static final int editText1=0x7f080017;
         public static final int edit_new=0x7f080014;
@@ -39,21 +39,22 @@ public final class R {
         public static final int info_new_word=0x7f080004;
         public static final int info_old_word=0x7f080007;
         public static final int info_total_word=0x7f080001;
-        public static final int move_to_del=0x7f080020;
-        public static final int move_to_new=0x7f08001f;
+        public static final int move_to_del=0x7f080021;
+        public static final int move_to_new=0x7f080020;
         public static final int move_to_old=0x7f080016;
-        public static final int move_to_tv_new=0x7f080015;
+        public static final int move_to_tv_in_new=0x7f080015;
+        public static final int move_to_tv_in_old=0x7f08001f;
         public static final int new_word=0x7f080005;
         public static final int next_new=0x7f080013;
         public static final int next_old=0x7f08001d;
         public static final int old_word=0x7f080008;
-        public static final int progressBar1=0x7f080024;
+        public static final int progressBar1=0x7f080025;
         public static final int show_new=0x7f080012;
         public static final int show_old=0x7f08001c;
-        public static final int spinner1=0x7f080023;
+        public static final int spinner1=0x7f080024;
         public static final int start_new=0x7f080010;
         public static final int start_old=0x7f08001a;
-        public static final int subTab1=0x7f080022;
+        public static final int subTab1=0x7f080023;
         public static final int tableRow1=0x7f080000;
         public static final int tableRow2=0x7f080003;
         public static final int tableRow3=0x7f080006;
