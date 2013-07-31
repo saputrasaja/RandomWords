@@ -76,21 +76,9 @@ public class MainTab extends TabActivity {
 		 getAppState().setAllRow(Word.getAllRow(getSQLite()));
 		// testUpdate();
 		checkGlobalVariable();
-		viewAllData();
 	}
 
-	protected void viewAllData() {
-		MyApp appState = ((MyApp) this.getApplicationContext());
-		DebugHelper.debug("VIEW ALL DATA");
-		for (String key : appState.getAllRow().keySet()) {
-			Word w = appState.getAllRow().get(key);
-			DebugHelper.debug(w.getEnglishWord() + " || "
-					+ w.getIndonesianWord() + " @" + w.getState() + "@ "
-					+ w.isHaveReadNew() + " " + w.isHaveReadOld());
-		}
-	}
-
-	protected void checkGlobalVariable() {
+   protected void checkGlobalVariable() {
 		MyApp appState = ((MyApp) this.getApplicationContext());
 		DebugHelper.debug("is AppState != null : " + (appState != null));
 		DebugHelper.debug("is SQLite != null : " + (appState.getSd() != null));

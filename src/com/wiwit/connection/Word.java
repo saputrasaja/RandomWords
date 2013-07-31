@@ -133,6 +133,10 @@ public class Word {
 			w.setHaveReadOld(value.equals("0") ? false : true);
 		}
 	}
+	
+	public static void updateReadableAllRow(String state){
+		
+	}
 
 	public static HashMap<String, Word> getAllRow(SQLiteDatabase sd) {
 		try {

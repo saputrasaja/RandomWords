@@ -3,11 +3,13 @@ package com.wiwit.acitivity.tab;
 import com.wiwit.all.R;
 import com.wiwit.connection.Word;
 import com.wiwit.connection.WordUtil;
+import com.wiwit.util.DebugHelper;
 import com.wiwit.util.MyApp;
 import com.wiwit.util.WordEngine;
 
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,6 +54,7 @@ public class NewWordTab extends Activity {
 				if (toggleNewWord.isChecked()) {
 					start.setVisibility(View.VISIBLE);
 					readyToStart = true;
+					
 				} else {
 					changeVisibilityElements(false);
 					start.setVisibility(View.INVISIBLE);
@@ -63,41 +66,54 @@ public class NewWordTab extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (readyToStart) {
-					changeVisibilityElements(true);
-					start.setVisibility(View.INVISIBLE);
 					generateEngine();
-					randomWordProcess();
-					show.setVisibility(View.VISIBLE);
+					start.setVisibility(View.INVISIBLE);
+					doNexOrDone();
 				}
 			}
 		});
 		show.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				next.setVisibility(View.VISIBLE);
-				edit.setVisibility(View.VISIBLE);
-				done.setVisibility(View.VISIBLE);
-				indonesianWord.setVisibility(View.VISIBLE);
+				if (engine.canRandomWord()) {
+					next.setVisibility(View.VISIBLE);
+					edit.setVisibility(View.VISIBLE);
+					done.setVisibility(View.VISIBLE);
+					indonesianWord.setVisibility(View.VISIBLE);
+				}
 			}
 		});
 		next.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				next.setVisibility(View.INVISIBLE);
-				edit.setVisibility(View.INVISIBLE);
-				done.setVisibility(View.INVISIBLE);
-				show.setVisibility(View.INVISIBLE);
 				engine.nextWord(word);
+				doNexOrDone();
 			}
 		});
 		done.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				next.setVisibility(View.INVISIBLE);
-				edit.setVisibility(View.INVISIBLE);
-				done.setVisibility(View.INVISIBLE);
+				engine.doneWord(word);
+				doNexOrDone();
 			}
 		});
+	}
+
+	protected void doNexOrDone() {
+		next.setVisibility(View.INVISIBLE);
+		edit.setVisibility(View.INVISIBLE);
+		done.setVisibility(View.INVISIBLE);
+		show.setVisibility(View.INVISIBLE);
+		DebugHelper.debug("doNexOrDone : " + engine.canRandomWord());
+		if (engine.canRandomWord()) {
+			randomWordProcess();
+		} else {
+			englishWord.setText("F I N I S H");
+			indonesianWord
+					.setText("please restart or manage your vocab list :)");
+			englishWord.setVisibility(View.VISIBLE);
+			indonesianWord.setVisibility(View.VISIBLE);
+		}
 	}
 
 	protected void randomWordProcess() {
@@ -105,22 +121,14 @@ public class NewWordTab extends Activity {
 		englishWord.setText(word.getEnglishWord());
 		indonesianWord.setText(word.getIndonesianWord());
 		indonesianWord.setVisibility(View.INVISIBLE);
+		englishWord.setVisibility(View.VISIBLE);
+		show.setVisibility(View.VISIBLE);
 	}
 
 	protected void generateEngine() {
 		getAppState().setAllRow(Word.getAllRow(getSQLite()));
 		engine = WordEngine.getWordsWithState(getAppState().getAllRow(),
 				WordUtil.NEW.toString(), getAppState().getSd());
-	}
-
-	protected void getRandomWord() {
-		if (engine.getWords().size() > 2
-				|| engine.getWords().size() > (engine.getWords().size() / 2)) {
-			word = engine.getRandoWords();
-		} else {
-			// TO DO
-		}
-
 	}
 
 	protected void changeVisibilityElements(boolean visibility) {

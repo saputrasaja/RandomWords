@@ -1,9 +1,11 @@
 package com.wiwit.util;
 
 import java.util.HashMap;
+
 import com.wiwit.connection.Word;
 import com.wiwit.connection.WordInfoUtil;
 import com.wiwit.connection.WordUtil;
+
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -30,6 +32,16 @@ public class MyApp extends Application {
 	public void setAllRow(HashMap<String, Word> allRow) {
 		this.allRow = new HashMap<String, Word>();
 		this.allRow = allRow;
+	}
+
+	public void viewAllData() {
+		DebugHelper.debug("VIEW ALL DATA");
+		for (String key : getAllRow().keySet()) {
+			Word w = getAllRow().get(key);
+			DebugHelper.debug(w.getEnglishWord() + " || "
+					+ w.getIndonesianWord() + " @" + w.getState() + "@ "
+					+ w.isHaveReadNew() + " " + w.isHaveReadOld());
+		}
 	}
 
 	public WordInfoUtil generateWordInfo() {
