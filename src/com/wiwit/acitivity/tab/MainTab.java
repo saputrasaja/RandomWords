@@ -15,18 +15,25 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 
 public class MainTab extends TabActivity {
+	protected TabHost tabHost;
+	protected long transactionID;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		WindowManager.LayoutParams attrs = this.getWindow().getAttributes();
+		attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+		this.getWindow().setAttributes(attrs);
 		setContentView(R.layout.tab);
 		initFirst();
 
 		/* TabHost will have Tabs */
-		TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
+		tabHost = (TabHost) findViewById(android.R.id.tabhost);
 
 		/*
 		 * TabSpec used to create a new tab. By using TabSpec only we can able
@@ -57,6 +64,14 @@ public class MainTab extends TabActivity {
 		tabHost.addTab(editTabSpec);
 	}
 
+	public void setTransactionID(long l) {
+		transactionID = l;
+	}
+
+	public void switchTabSpecial(int tab) {
+		tabHost.setCurrentTab(tab);
+	}
+
 	protected MyApp getAppState() {
 		return ((MyApp) this.getApplicationContext());
 	}
@@ -75,7 +90,7 @@ public class MainTab extends TabActivity {
 				MODE_PRIVATE, null));
 		initFirstlyLauncth();
 		getAppState().setAllRow(Word.getAllRow(getSQLite()));
-		// testUpdate();
+		testUpdate();
 		checkGlobalVariable();
 	}
 
@@ -88,30 +103,31 @@ public class MainTab extends TabActivity {
 	}
 
 	protected void testUpdate() {
+		String word = "convey";
 		HashMap<String, Word> wordMap = getAppState().getAllRow();
 		DebugHelper.debug("indonesian : "
-				+ wordMap.get("accuse").getIndonesianWord());
+				+ wordMap.get(word).getIndonesianWord());
 		DebugHelper
-				.debug("english : " + wordMap.get("accuse").getEnglishWord());
-		DebugHelper.debug("state : " + wordMap.get("accuse").getState());
+				.debug("english : " + wordMap.get(word).getEnglishWord());
+		DebugHelper.debug("state : " + wordMap.get(word).getState());
 		DebugHelper.debug("isHaveReadNew : "
-				+ wordMap.get("accuse").isHaveReadNew());
+				+ wordMap.get(word).isHaveReadNew());
 		DebugHelper.debug("isHaveReadOld : "
-				+ wordMap.get("accuse").isHaveReadOld());
+				+ wordMap.get(word).isHaveReadOld());
 
-		Word w = wordMap.get("accuse");
-		w.setIndonesianWord("tuduh");
-		w.setState(WordUtil.NEW.toString());
+		Word w = wordMap.get("convey");
+		w.setIndonesianWord("indo");
+		w.setState(WordUtil.DELETE.toString());
 		w.setHaveReadNew(true);
 		w.setHaveReadOld(true);
-		w.update(getSQLite(), "accuse");
+		w.update(getSQLite(), "convey");
 
 		getAppState().setAllRow(Word.getAllRow(getSQLite()));
 		wordMap = getAppState().getAllRow();
-		DebugHelper.debug(wordMap.get("accuse").getIndonesianWord());
-		DebugHelper.debug(wordMap.get("accuse").getEnglishWord());
-		DebugHelper.debug(wordMap.get("accuse").getState());
-		DebugHelper.debug(wordMap.get("accuse").isHaveReadNew());
-		DebugHelper.debug(wordMap.get("accuse").isHaveReadOld());
+		DebugHelper.debug(wordMap.get(word).getIndonesianWord());
+		DebugHelper.debug(wordMap.get(word).getEnglishWord());
+		DebugHelper.debug(wordMap.get(word).getState());
+		DebugHelper.debug(wordMap.get(word).isHaveReadNew());
+		DebugHelper.debug(wordMap.get(word).isHaveReadOld());
 	}
 }

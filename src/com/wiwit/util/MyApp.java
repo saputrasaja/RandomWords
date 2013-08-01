@@ -2,10 +2,14 @@ package com.wiwit.util;
 
 import java.util.HashMap;
 
+import com.wiwit.acitivity.tab.EditTab;
+import com.wiwit.acitivity.tab.NewWordTab;
+import com.wiwit.acitivity.tab.OldWordTab;
 import com.wiwit.connection.Word;
 import com.wiwit.connection.WordInfoUtil;
 import com.wiwit.connection.WordUtil;
 
+import android.app.Activity;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -13,6 +17,9 @@ public class MyApp extends Application {
 
 	private SQLiteDatabase sd;
 	private HashMap<String, Word> allRow;
+	public EditTab editTab;
+	public NewWordTab newWordTab;
+	public OldWordTab oldWordTab;
 
 	public MyApp() {
 	}
@@ -33,7 +40,7 @@ public class MyApp extends Application {
 		this.allRow = new HashMap<String, Word>();
 		this.allRow = allRow;
 	}
-
+	
 	public void viewAllData() {
 		DebugHelper.debug("==========================VIEW ALL DATA==========================");
 		for (String key : getAllRow().keySet()) {

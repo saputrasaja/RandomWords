@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <TableRow
-        android:id="@+id/tableRow1"
+        android:id="@+id/row_find_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp" >
@@ -54,7 +54,7 @@
     </TableRow>
 
     <TableRow
-        android:id="@+id/tableRow3"
+        android:id="@+id/row_search_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 

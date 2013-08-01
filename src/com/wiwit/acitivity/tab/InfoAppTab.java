@@ -52,7 +52,6 @@ public class InfoAppTab extends Activity {
 
 	public void refreshInfo() {
 		try {
-			getAppState().viewAllData();
 //			DebugHelper.debug("refreshInfo");
 //			DebugHelper.debug("size : " + getAppState().getAllRow().size());
 			WordInfoUtil wiu = getAppState().generateWordInfo();

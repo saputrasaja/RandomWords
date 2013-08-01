@@ -50,12 +50,7 @@ public class OldWordTab extends Activity {
 		moveToTextView = (TextView) findViewById(R.id.move_to_tv_in_old);
 		start = (Button) findViewById(R.id.start_old);
 		toggleOldWord = (ToggleButton) findViewById(R.id.toggle_old);
-		// dialog
-		restartDialog = new AlertDialog.Builder(this);
-		moveToNewDialog = new AlertDialog.Builder(this);
-		moveToDelDialog = new AlertDialog.Builder(this);
-		initListener();
-		// set invisible for some element
+		// set visibility
 		englishWord.setVisibility(View.INVISIBLE);
 		indonesianWord.setVisibility(View.INVISIBLE);
 		start.setVisibility(View.INVISIBLE);
@@ -65,6 +60,12 @@ public class OldWordTab extends Activity {
 		moveToNew.setVisibility(View.INVISIBLE);
 		moveToDel.setVisibility(View.INVISIBLE);
 		moveToTextView.setVisibility(View.INVISIBLE);
+		// dialog
+		restartDialog = new AlertDialog.Builder(this);
+		moveToNewDialog = new AlertDialog.Builder(this);
+		moveToDelDialog = new AlertDialog.Builder(this);
+		initListener();
+		getAppState().oldWordTab = this;
 	}
 
 	private void initListener() {
@@ -167,11 +168,6 @@ public class OldWordTab extends Activity {
 				preDoOrNext();
 			}
 		});
-		edit.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-			}
-		});
 		moveToNew.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -184,6 +180,18 @@ public class OldWordTab extends Activity {
 				moveToDelDialog.show();
 			}
 		});
+		edit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switchTab(3);
+				getAppState().editTab.editWord(word, EditTab.FROM_OLD);
+			}
+		});
+	}
+	
+	public void setElement(Word word) {
+		indonesianWord.setText(word.getIndonesianWord());
+		this.word = word;
 	}
 
 	protected void randomWordProcess() {
@@ -212,6 +220,12 @@ public class OldWordTab extends Activity {
 			englishWord.setVisibility(View.VISIBLE);
 			indonesianWord.setVisibility(View.VISIBLE);
 		}
+	}
+
+	protected void switchTab(int tabId) {
+		MainTab ParentActivity = (MainTab) this.getParent();
+		ParentActivity.setTransactionID(tabId);
+		ParentActivity.switchTabSpecial(tabId);
 	}
 
 	protected void generateEngine() {

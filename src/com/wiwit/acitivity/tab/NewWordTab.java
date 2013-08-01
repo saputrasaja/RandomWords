@@ -10,6 +10,7 @@ import com.wiwit.util.WordEngine;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -61,7 +62,7 @@ public class NewWordTab extends Activity {
 		restartDialog = new AlertDialog.Builder(this);
 		moveToOldDialog = new AlertDialog.Builder(this);
 		setListener();
-
+		getAppState().newWordTab = this;
 	}
 
 	protected void setListener() {
@@ -153,6 +154,24 @@ public class NewWordTab extends Activity {
 				moveToOldDialog.show();
 			}
 		});
+		edit.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switchTab(3);
+				getAppState().editTab.editWord(word, EditTab.FROM_NEW);
+			}
+		});
+	}
+
+	public void setElement(Word word) {
+		indonesianWord.setText(word.getIndonesianWord());
+		this.word = word;
+	}
+
+	protected void switchTab(int tabId) {
+		MainTab ParentActivity = (MainTab) this.getParent();
+		ParentActivity.setTransactionID(tabId);
+		ParentActivity.switchTabSpecial(tabId);
 	}
 
 	protected void randomWordProcess() {
@@ -163,7 +182,7 @@ public class NewWordTab extends Activity {
 		englishWord.setVisibility(View.VISIBLE);
 		show.setVisibility(View.VISIBLE);
 	}
-	
+
 	protected void preDoOrNext() {
 		next.setVisibility(View.INVISIBLE);
 		edit.setVisibility(View.INVISIBLE);

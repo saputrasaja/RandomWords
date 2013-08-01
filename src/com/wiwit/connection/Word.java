@@ -72,7 +72,7 @@ public class Word {
 				+ "` varchar(16) NOT NULL, `" + COLUMN_4
 				+ "` tinyint(1) NOT NULL, `" + COLUMN_5
 				+ "` tinyint(1) NOT NULL, PRIMARY KEY (`" + COLUMN_1 + "`))";
-//		DebugHelper.debug(sql);
+		// DebugHelper.debug(sql);
 		return sql;
 	}
 
@@ -86,14 +86,14 @@ public class Word {
 					+ getIndonesianWord() + "', '" + getState() + "','"
 					+ (isHaveReadNew() ? 1 : 0) + "','"
 					+ (isHaveReadOld() ? 1 : 0) + "');";
-//			DebugHelper.debug(insertSql2);
+			// DebugHelper.debug(insertSql2);
 			sd.execSQL(insertSql2);
 		} catch (Exception e) {
-			DebugHelper.exception("can't input "+getEnglishWord(), e);
+			DebugHelper.exception("can't input " + getEnglishWord(), e);
 			try {
 				update(sd, getEnglishWord());
 			} catch (Exception ee) {
-				DebugHelper.exception("can't update "+getEnglishWord(), ee);
+				DebugHelper.exception("can't update " + getEnglishWord(), ee);
 			}
 		}
 	}
@@ -132,9 +132,9 @@ public class Word {
 			w.setHaveReadOld(value.equals("0") ? false : true);
 		}
 	}
-	
-	public static void updateReadableAllRow(String state){
-		
+
+	public static void updateReadableAllRow(String state) {
+
 	}
 
 	public static HashMap<String, Word> getAllRow(SQLiteDatabase sd) {
