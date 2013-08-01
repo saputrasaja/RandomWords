@@ -35,7 +35,7 @@ public class MyApp extends Application {
 	}
 
 	public void viewAllData() {
-		DebugHelper.debug("VIEW ALL DATA");
+		DebugHelper.debug("==========================VIEW ALL DATA==========================");
 		for (String key : getAllRow().keySet()) {
 			Word w = getAllRow().get(key);
 			DebugHelper.debug(w.getEnglishWord() + " || "

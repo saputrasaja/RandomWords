@@ -68,18 +68,29 @@ public class OldWordTab extends Activity {
 	}
 
 	private void initListener() {
-		restartDialog.setMessage("Wanna restart all new words ?");
 		DialogInterface.OnClickListener restartDialogListener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case DialogInterface.BUTTON_POSITIVE:
+					next.setVisibility(View.INVISIBLE);
+					edit.setVisibility(View.INVISIBLE);
+					moveToNew.setVisibility(View.INVISIBLE);
+					moveToTextView.setVisibility(View.INVISIBLE);
+					start.setVisibility(View.INVISIBLE);
+					englishWord.setVisibility(View.INVISIBLE);
+					indonesianWord.setVisibility(View.INVISIBLE);
+					show.setVisibility(View.INVISIBLE);
+					readyToStart = false;
+					engine.restartWord();
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
+					toggleOldWord.setChecked(true);
 					break;
 				}
 			}
 		};
+		restartDialog.setMessage("Wanna restart all old words ?");
 		restartDialog.setPositiveButton("Yes", restartDialogListener);
 		restartDialog.setNegativeButton("No", restartDialogListener);
 		DialogInterface.OnClickListener moveToNewListener = new DialogInterface.OnClickListener() {
@@ -87,12 +98,15 @@ public class OldWordTab extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case DialogInterface.BUTTON_POSITIVE:
+					engine.upState(word);
+					preDoOrNext();
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
 					break;
 				}
 			}
 		};
+		moveToNewDialog.setMessage("Move to NEW state for this word ?");
 		moveToNewDialog.setPositiveButton("Yes", moveToNewListener);
 		moveToNewDialog.setNegativeButton("No", moveToNewListener);
 		DialogInterface.OnClickListener moveToDelListener = new DialogInterface.OnClickListener() {
@@ -100,12 +114,15 @@ public class OldWordTab extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case DialogInterface.BUTTON_POSITIVE:
+					engine.downState(word);
+					preDoOrNext();
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
 					break;
 				}
 			}
 		};
+		moveToDelDialog.setMessage("Move to DELETE state for this word ?");
 		moveToDelDialog.setPositiveButton("Yes", moveToDelListener);
 		moveToDelDialog.setNegativeButton("No", moveToDelListener);
 		toggleOldWord.setOnClickListener(new OnClickListener() {
@@ -126,6 +143,20 @@ public class OldWordTab extends Activity {
 					generateEngine();
 					start.setVisibility(View.INVISIBLE);
 					preDoOrNext();
+				}
+			}
+		});
+		show.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (engine.canRandomWord()) {
+					next.setVisibility(View.VISIBLE);
+					edit.setVisibility(View.VISIBLE);
+					indonesianWord.setVisibility(View.VISIBLE);
+					moveToTextView.setVisibility(View.VISIBLE);
+					moveToNew.setVisibility(View.VISIBLE);
+					moveToDel.setVisibility(View.VISIBLE);
+					show.setVisibility(View.INVISIBLE);
 				}
 			}
 		});
@@ -150,6 +181,7 @@ public class OldWordTab extends Activity {
 		moveToDel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				moveToDelDialog.show();
 			}
 		});
 	}

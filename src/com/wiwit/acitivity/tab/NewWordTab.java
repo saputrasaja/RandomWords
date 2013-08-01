@@ -65,7 +65,6 @@ public class NewWordTab extends Activity {
 	}
 
 	protected void setListener() {
-		restartDialog.setMessage("Wanna restart all new words ?");
 		DialogInterface.OnClickListener restartdialogListener = new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -88,6 +87,7 @@ public class NewWordTab extends Activity {
 				}
 			}
 		};
+		restartDialog.setMessage("Wanna restart all new words ?");
 		restartDialog.setPositiveButton("Yes", restartdialogListener);
 		restartDialog.setNegativeButton("No", restartdialogListener);
 		moveToOldDialog.setMessage("Move to OLD state for this word ?");
@@ -133,9 +133,9 @@ public class NewWordTab extends Activity {
 				if (engine.canRandomWord()) {
 					next.setVisibility(View.VISIBLE);
 					edit.setVisibility(View.VISIBLE);
-					moveToOld.setVisibility(View.VISIBLE);
 					indonesianWord.setVisibility(View.VISIBLE);
 					moveToTextView.setVisibility(View.VISIBLE);
+					moveToOld.setVisibility(View.VISIBLE);
 					show.setVisibility(View.INVISIBLE);
 				}
 			}
