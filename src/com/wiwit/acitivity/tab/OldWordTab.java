@@ -2,11 +2,14 @@ package com.wiwit.acitivity.tab;
 
 import com.wiwit.all.R;
 import com.wiwit.connection.Word;
+import com.wiwit.connection.WordUtil;
+import com.wiwit.util.MyApp;
 import com.wiwit.util.WordEngine;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,6 +38,7 @@ public class OldWordTab extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// findById
 		setContentView(R.layout.old_word_layout);
 		englishWord = (TextView) findViewById(R.id.english_old);
 		indonesianWord = (TextView) findViewById(R.id.indonesian_old);
@@ -46,10 +50,21 @@ public class OldWordTab extends Activity {
 		moveToTextView = (TextView) findViewById(R.id.move_to_tv_in_old);
 		start = (Button) findViewById(R.id.start_old);
 		toggleOldWord = (ToggleButton) findViewById(R.id.toggle_old);
+		// dialog
 		restartDialog = new AlertDialog.Builder(this);
 		moveToNewDialog = new AlertDialog.Builder(this);
 		moveToDelDialog = new AlertDialog.Builder(this);
 		initListener();
+		// set invisible for some element
+		englishWord.setVisibility(View.INVISIBLE);
+		indonesianWord.setVisibility(View.INVISIBLE);
+		start.setVisibility(View.INVISIBLE);
+		show.setVisibility(View.INVISIBLE);
+		next.setVisibility(View.INVISIBLE);
+		edit.setVisibility(View.INVISIBLE);
+		moveToNew.setVisibility(View.INVISIBLE);
+		moveToDel.setVisibility(View.INVISIBLE);
+		moveToTextView.setVisibility(View.INVISIBLE);
 	}
 
 	private void initListener() {
@@ -96,16 +111,29 @@ public class OldWordTab extends Activity {
 		toggleOldWord.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (toggleOldWord.isChecked()) {
+					start.setVisibility(View.VISIBLE);
+					readyToStart = true;
+				} else {
+					restartDialog.show();
+				}
 			}
 		});
 		start.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (readyToStart) {
+					generateEngine();
+					start.setVisibility(View.INVISIBLE);
+					preDoOrNext();
+				}
 			}
 		});
 		next.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				engine.nextWord(word);
+				preDoOrNext();
 			}
 		});
 		edit.setOnClickListener(new OnClickListener() {
@@ -116,6 +144,7 @@ public class OldWordTab extends Activity {
 		moveToNew.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				moveToNewDialog.show();
 			}
 		});
 		moveToDel.setOnClickListener(new OnClickListener() {
@@ -123,5 +152,60 @@ public class OldWordTab extends Activity {
 			public void onClick(View v) {
 			}
 		});
+	}
+
+	protected void randomWordProcess() {
+		word = engine.getRandoWords();
+		englishWord.setText(word.getEnglishWord());
+		indonesianWord.setText(word.getIndonesianWord());
+		indonesianWord.setVisibility(View.INVISIBLE);
+		englishWord.setVisibility(View.VISIBLE);
+		show.setVisibility(View.VISIBLE);
+	}
+
+	protected void preDoOrNext() {
+		next.setVisibility(View.INVISIBLE);
+		edit.setVisibility(View.INVISIBLE);
+		moveToTextView.setVisibility(View.INVISIBLE);
+		show.setVisibility(View.INVISIBLE);
+		moveToTextView.setVisibility(View.INVISIBLE);
+		moveToNew.setVisibility(View.INVISIBLE);
+		moveToDel.setVisibility(View.INVISIBLE);
+		if (engine.canRandomWord()) {
+			randomWordProcess();
+		} else {
+			englishWord.setText("F I N I S H");
+			indonesianWord
+					.setText("please restart or manage your vocab list :)");
+			englishWord.setVisibility(View.VISIBLE);
+			indonesianWord.setVisibility(View.VISIBLE);
+		}
+	}
+
+	protected void generateEngine() {
+		getAppState().setAllRow(Word.getAllRow(getSQLite()));
+		engine = WordEngine.generateWordEngine(getAppState().getAllRow(),
+				WordUtil.OLD.toString(), getAppState().getSd());
+	}
+
+	protected MyApp getAppState() {
+		return ((MyApp) this.getApplicationContext());
+	}
+
+	protected SQLiteDatabase getSQLite() {
+		return getAppState().getSd();
+	}
+
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this)
+				.setMessage("Are you sure you want to exit?")
+				.setCancelable(false)
+				.setPositiveButton("Yes",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								OldWordTab.this.finish();
+							}
+						}).setNegativeButton("No", null).show();
 	}
 }

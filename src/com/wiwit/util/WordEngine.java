@@ -10,11 +10,12 @@ import com.wiwit.connection.Word;
 import com.wiwit.connection.WordUtil;
 
 public class WordEngine {
+	public static final String DOWN_STATE = "DOWN_STATE";
+	public static final String UP_STATE = "UP_STATE";
+	public static final String ALREDY_READ = "ALREDY_READ";
 	private List<Word> words;
 	protected String wordState;
 	private SQLiteDatabase sqLiteDatabase;
-	protected final static String NEXT = "NEXT";
-	protected final static String DONE = "DONE";
 
 	public WordEngine() {
 	}
@@ -57,33 +58,26 @@ public class WordEngine {
 		return this.words.get((int) (Math.random() * (this.words.size())));
 	}
 
-	private void findAndUpdate(Word word, String from) {
-		// DebugHelper.debug("findAndUpdate");
+	private void findAndUpdate(Word word, String method) {
 		if (wordState.equals(WordUtil.NEW.toString())) {
-			DebugHelper.debug("NEW");
-			if (from.equals(NEXT)) {
-				DebugHelper.debug("NEXT");
+			if (method.equals(ALREDY_READ)) {
 				word.setHaveReadNew(true);
-			} else if (from.equals(DONE)) {
-				DebugHelper.debug("DONE");
+			} else if (method.equals(DOWN_STATE)) {
 				word.setHaveReadNew(false);
 				word.setState(WordUtil.OLD.toString());
 			}
-			// DebugHelper.debug("ready to update");
 			word.update(sqLiteDatabase, word.getEnglishWord());
 			remove(word);
 		} else if (wordState.equals(WordUtil.OLD.toString())) {
-			DebugHelper.debug("OLD");
-			if (from.equals(NEXT)) {
-				DebugHelper.debug("NEXT");
+			if (method.equals(ALREDY_READ)) {
 				word.setHaveReadOld(true);
-			} else if (from.equals(DONE)) {
-				DebugHelper.debug("DONE");
+			} else if (method.equals(DOWN_STATE)) {
 				word.setHaveReadOld(false);
 				word.setState(WordUtil.DELETE.toString());
+			} else if (method.equals(UP_STATE)) {
+				word.setHaveReadNew(false);
+				word.setState(WordUtil.NEW.toString());
 			}
-			// DebugHelper.debug("ready to update");
-			word.update(sqLiteDatabase, word.getEnglishWord());
 			remove(word);
 		}
 	}
@@ -100,11 +94,15 @@ public class WordEngine {
 	}
 
 	public void nextWord(Word word) {
-		findAndUpdate(word, NEXT);
+		findAndUpdate(word, ALREDY_READ);
 	}
 
-	public void doneWord(Word word) {
-		findAndUpdate(word, DONE);
+	public void downState(Word word) {
+		findAndUpdate(word, DOWN_STATE);
+	}
+
+	public void upState(Word word) {
+		findAndUpdate(word, UP_STATE);
 	}
 
 	public static WordEngine generateWordEngine(HashMap<String, Word> allWords,

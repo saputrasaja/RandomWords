@@ -96,8 +96,8 @@ public class NewWordTab extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case DialogInterface.BUTTON_POSITIVE:
-					engine.doneWord(word);
-					doNexOrDone();
+					engine.downState(word);
+					preDoOrNext();
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
 					break;
@@ -123,7 +123,7 @@ public class NewWordTab extends Activity {
 				if (readyToStart) {
 					generateEngine();
 					start.setVisibility(View.INVISIBLE);
-					doNexOrDone();
+					preDoOrNext();
 				}
 			}
 		});
@@ -144,7 +144,7 @@ public class NewWordTab extends Activity {
 			@Override
 			public void onClick(View v) {
 				engine.nextWord(word);
-				doNexOrDone();
+				preDoOrNext();
 			}
 		});
 		moveToOld.setOnClickListener(new OnClickListener() {
@@ -155,13 +155,21 @@ public class NewWordTab extends Activity {
 		});
 	}
 
-	protected void doNexOrDone() {
+	protected void randomWordProcess() {
+		word = engine.getRandoWords();
+		englishWord.setText(word.getEnglishWord());
+		indonesianWord.setText(word.getIndonesianWord());
+		indonesianWord.setVisibility(View.INVISIBLE);
+		englishWord.setVisibility(View.VISIBLE);
+		show.setVisibility(View.VISIBLE);
+	}
+	
+	protected void preDoOrNext() {
 		next.setVisibility(View.INVISIBLE);
 		edit.setVisibility(View.INVISIBLE);
 		moveToOld.setVisibility(View.INVISIBLE);
 		moveToTextView.setVisibility(View.INVISIBLE);
 		show.setVisibility(View.INVISIBLE);
-		DebugHelper.debug("doNexOrDone : " + engine.canRandomWord());
 		if (engine.canRandomWord()) {
 			randomWordProcess();
 		} else {
@@ -171,15 +179,6 @@ public class NewWordTab extends Activity {
 			englishWord.setVisibility(View.VISIBLE);
 			indonesianWord.setVisibility(View.VISIBLE);
 		}
-	}
-
-	protected void randomWordProcess() {
-		word = engine.getRandoWords();
-		englishWord.setText(word.getEnglishWord());
-		indonesianWord.setText(word.getIndonesianWord());
-		indonesianWord.setVisibility(View.INVISIBLE);
-		englishWord.setVisibility(View.VISIBLE);
-		show.setVisibility(View.VISIBLE);
 	}
 
 	protected void generateEngine() {
