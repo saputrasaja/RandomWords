@@ -27,6 +27,7 @@
         <activity android:name="com.wiwit.acitivity.tab.NewWordTab" />
         <activity android:name="com.wiwit.acitivity.tab.OldWordTab" />
         <activity android:name="com.wiwit.acitivity.tab.InfoAppTab" />
+        <activity android:name="com.wiwit.acitivity.tab.EditTab" />
     </application>
 
 </manifest>

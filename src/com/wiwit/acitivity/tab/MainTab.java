@@ -46,11 +46,10 @@ public class MainTab extends TabActivity {
 				new Intent(this, NewWordTab.class));
 		oldWordSpec.setIndicator("Old Word").setContent(
 				new Intent(this, OldWordTab.class));
-		editTabSpec.setIndicator("Edit Word").setContent(
-				new Intent(this, OldWordTab.class));
 		infoTabSpec.setIndicator("Info").setContent(
 				new Intent(this, InfoAppTab.class));
-
+		editTabSpec.setIndicator("Edit Word").setContent(
+				new Intent(this, EditTab.class));
 		/* Add tabSpec to the TabHost to display. */
 		tabHost.addTab(infoTabSpec);
 		tabHost.addTab(newWordSpec);
