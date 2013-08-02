@@ -5,6 +5,7 @@ import com.wiwit.connection.Word;
 import com.wiwit.connection.WordUtil;
 import com.wiwit.util.DebugHelper;
 import com.wiwit.util.MyApp;
+import com.wiwit.util.StaticData;
 import com.wiwit.util.WordEngine;
 
 import android.app.Activity;
@@ -13,10 +14,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class NewWordTab extends Activity {
@@ -81,6 +84,7 @@ public class NewWordTab extends Activity {
 					show.setVisibility(View.INVISIBLE);
 					readyToStart = false;
 					engine.restartWord();
+					toast("Lets play again");
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
 					toggleNewWord.setChecked(true);
@@ -99,6 +103,7 @@ public class NewWordTab extends Activity {
 				case DialogInterface.BUTTON_POSITIVE:
 					engine.downState(word);
 					preDoOrNext();
+					toast("Success move to OLD state");
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
 					break;
@@ -163,17 +168,6 @@ public class NewWordTab extends Activity {
 		});
 	}
 
-	public void setElement(Word word) {
-		indonesianWord.setText(word.getIndonesianWord());
-		this.word = word;
-	}
-
-	protected void switchTab(int tabId) {
-		MainTab ParentActivity = (MainTab) this.getParent();
-		ParentActivity.setTransactionID(tabId);
-		ParentActivity.switchTabSpecial(tabId);
-	}
-
 	protected void randomWordProcess() {
 		word = engine.getRandoWords();
 		englishWord.setText(word.getEnglishWord());
@@ -198,6 +192,38 @@ public class NewWordTab extends Activity {
 			englishWord.setVisibility(View.VISIBLE);
 			indonesianWord.setVisibility(View.VISIBLE);
 		}
+	}
+
+	// all importan fungsions undder this comment
+	protected void toast(String message) {
+		Toast toast = Toast.makeText(NewWordTab.this, message,
+				StaticData.TOAST_DURATION);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.show();
+	}
+
+	public void updateWord(Word word, String oldKey) {
+		if (this.word != null && this.word.equals(oldKey)) {
+			this.word.updateElement(word);
+		} else if (this.engine != null) {
+			for (Word w : engine.getWords()) {
+				if (w.equals(oldKey)) {
+					w.updateElement(word);
+				}
+			}
+		}
+	}
+
+	protected void switchTab(int tabId) {
+		MainTab ParentActivity = (MainTab) this.getParent();
+		ParentActivity.setTransactionID(tabId);
+		ParentActivity.switchTabSpecial(tabId);
+	}
+
+	public void setElement(Word word) {
+		indonesianWord.setText(word.getIndonesianWord());
+		this.word = word;
+		toast("Success update data");
 	}
 
 	protected void generateEngine() {

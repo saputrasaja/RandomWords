@@ -4,6 +4,7 @@ import com.wiwit.all.R;
 import com.wiwit.connection.Word;
 import com.wiwit.connection.WordUtil;
 import com.wiwit.util.MyApp;
+import com.wiwit.util.StaticData;
 import com.wiwit.util.WordEngine;
 
 import android.app.Activity;
@@ -11,10 +12,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class OldWordTab extends Activity {
@@ -84,6 +87,7 @@ public class OldWordTab extends Activity {
 					show.setVisibility(View.INVISIBLE);
 					readyToStart = false;
 					engine.restartWord();
+					toast("Lets play again");
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
 					toggleOldWord.setChecked(true);
@@ -101,6 +105,7 @@ public class OldWordTab extends Activity {
 				case DialogInterface.BUTTON_POSITIVE:
 					engine.upState(word);
 					preDoOrNext();
+					toast("Success move to NEW state");
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
 					break;
@@ -117,6 +122,7 @@ public class OldWordTab extends Activity {
 				case DialogInterface.BUTTON_POSITIVE:
 					engine.downState(word);
 					preDoOrNext();
+					toast("Success move to DELETE state");
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
 					break;
@@ -188,11 +194,6 @@ public class OldWordTab extends Activity {
 			}
 		});
 	}
-	
-	public void setElement(Word word) {
-		indonesianWord.setText(word.getIndonesianWord());
-		this.word = word;
-	}
 
 	protected void randomWordProcess() {
 		word = engine.getRandoWords();
@@ -220,6 +221,32 @@ public class OldWordTab extends Activity {
 			englishWord.setVisibility(View.VISIBLE);
 			indonesianWord.setVisibility(View.VISIBLE);
 		}
+	}
+
+	// all importan fungsions undder this comment
+	protected void toast(String message) {
+		Toast toast = Toast.makeText(OldWordTab.this, message,
+				StaticData.TOAST_DURATION);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.show();
+	}
+
+	public void updateWord(Word word, String oldKey) {
+		if (this.word != null && this.word.equals(oldKey)) {
+			this.word.updateElement(word);
+		} else if (this.engine != null) {
+			for (Word w : engine.getWords()) {
+				if (w.equals(oldKey)) {
+					w.updateElement(word);
+				}
+			}
+		}
+	}
+
+	public void setElement(Word word) {
+		indonesianWord.setText(word.getIndonesianWord());
+		this.word = word;
+		toast("Success update data");
 	}
 
 	protected void switchTab(int tabId) {

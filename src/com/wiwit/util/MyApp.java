@@ -47,7 +47,7 @@ public class MyApp extends Application {
 			Word w = getAllRow().get(key);
 			DebugHelper.debug(w.getEnglishWord() + " || "
 					+ w.getIndonesianWord() + " @" + w.getState() + "@ "
-					+ w.isHaveReadNew() + " " + w.isHaveReadOld());
+					+ w.isHasReadNew() + " " + w.isHasReadOld());
 		}
 	}
 

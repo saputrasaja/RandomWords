@@ -61,21 +61,21 @@ public class WordEngine {
 	private void findAndUpdate(Word word, String method) {
 		if (wordState.equals(WordUtil.NEW.toString())) {
 			if (method.equals(ALREDY_READ)) {
-				word.setHaveReadNew(true);
+				word.setHasReadNew(true);
 			} else if (method.equals(DOWN_STATE)) {
-				word.setHaveReadNew(false);
+				word.setHasReadNew(false);
 				word.setState(WordUtil.OLD.toString());
 			}
 			word.update(sqLiteDatabase, word.getEnglishWord());
 			remove(word);
 		} else if (wordState.equals(WordUtil.OLD.toString())) {
 			if (method.equals(ALREDY_READ)) {
-				word.setHaveReadOld(true);
+				word.setHasReadOld(true);
 			} else if (method.equals(DOWN_STATE)) {
-				word.setHaveReadOld(false);
+				word.setHasReadOld(false);
 				word.setState(WordUtil.DELETE.toString());
 			} else if (method.equals(UP_STATE)) {
-				word.setHaveReadNew(false);
+				word.setHasReadNew(false);
 				word.setState(WordUtil.NEW.toString());
 			}
 			remove(word);
@@ -113,9 +113,9 @@ public class WordEngine {
 			boolean alredyRead = true;
 			if (word.getState().equals(state)) {
 				if (state.equals(WordUtil.NEW.toString())) {
-					alredyRead = word.isHaveReadNew();
+					alredyRead = word.isHasReadNew();
 				} else if (state.equals(WordUtil.OLD.toString())) {
-					alredyRead = word.isHaveReadOld();
+					alredyRead = word.isHasReadOld();
 				}
 				if (!alredyRead) {
 					result.add(word);
@@ -135,9 +135,9 @@ public class WordEngine {
 			Word word = words.get(key);
 			if (word.getState().equals(this.wordState)) {
 				if (word.getState().equals(WordUtil.NEW.toString())) {
-					word.setHaveReadNew(false);
+					word.setHasReadNew(false);
 				} else if (word.getState().equals(WordUtil.OLD.toString())) {
-					word.setHaveReadOld(false);
+					word.setHasReadOld(false);
 				}
 				word.update(sqLiteDatabase, word.getEnglishWord());
 			}

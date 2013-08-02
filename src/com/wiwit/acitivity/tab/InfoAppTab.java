@@ -5,6 +5,7 @@ import com.wiwit.connection.WordInfoUtil;
 import com.wiwit.connection.WordUtil;
 import com.wiwit.util.DebugHelper;
 import com.wiwit.util.MyApp;
+import com.wiwit.util.StaticData;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,10 +13,12 @@ import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Debug;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class InfoAppTab extends Activity {
 	protected TextView all;
@@ -52,18 +55,23 @@ public class InfoAppTab extends Activity {
 
 	public void refreshInfo() {
 		try {
-//			DebugHelper.debug("refreshInfo");
-//			DebugHelper.debug("size : " + getAppState().getAllRow().size());
 			WordInfoUtil wiu = getAppState().generateWordInfo();
 			all.setText(" : " + wiu.getAllWord());
 			newWord.setText(" : " + wiu.getNewWord());
 			oldWord.setText(" : " + wiu.getOldWord());
 			deleteWord.setText(" : " + wiu.getDeleted());
-//			DebugHelper.debug("after init");
+			toast("Success refresh info");
 		} catch (Exception e) {
 			DebugHelper.debug("can't refreshInfo");
 			DebugHelper.exception(this, e);
+			toast(e.getMessage());
 		}
+	}
+	
+	protected void toast(String message) {
+		Toast toast = Toast.makeText(InfoAppTab.this, message, StaticData.TOAST_DURATION);
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.show();
 	}
 
 	@Override

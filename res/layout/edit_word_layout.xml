@@ -178,13 +178,22 @@
     <TableRow
         android:id="@+id/tableRow12"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/clear_edit"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text="Clear" />
 
         <Button
             android:id="@+id/save_edit"
-            android:layout_width="match_parent"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:text="Save" />
+
     </TableRow>
 
 </LinearLayout>

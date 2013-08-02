@@ -49,13 +49,13 @@ public class MainTab extends TabActivity {
 
 		/* TabSpec setIndicator() is used to set name for the tab. */
 		/* TabSpec setContent() is used to set content for a particular tab. */
-		newWordSpec.setIndicator("New Word").setContent(
+		newWordSpec.setIndicator("New").setContent(
 				new Intent(this, NewWordTab.class));
-		oldWordSpec.setIndicator("Old Word").setContent(
+		oldWordSpec.setIndicator("Old").setContent(
 				new Intent(this, OldWordTab.class));
 		infoTabSpec.setIndicator("Info").setContent(
 				new Intent(this, InfoAppTab.class));
-		editTabSpec.setIndicator("Edit Word").setContent(
+		editTabSpec.setIndicator("Edit").setContent(
 				new Intent(this, EditTab.class));
 		/* Add tabSpec to the TabHost to display. */
 		tabHost.addTab(infoTabSpec);
@@ -111,15 +111,15 @@ public class MainTab extends TabActivity {
 				.debug("english : " + wordMap.get(word).getEnglishWord());
 		DebugHelper.debug("state : " + wordMap.get(word).getState());
 		DebugHelper.debug("isHaveReadNew : "
-				+ wordMap.get(word).isHaveReadNew());
+				+ wordMap.get(word).isHasReadNew());
 		DebugHelper.debug("isHaveReadOld : "
-				+ wordMap.get(word).isHaveReadOld());
+				+ wordMap.get(word).isHasReadOld());
 
 		Word w = wordMap.get("convey");
 		w.setIndonesianWord("indo");
 		w.setState(WordUtil.DELETE.toString());
-		w.setHaveReadNew(true);
-		w.setHaveReadOld(true);
+		w.setHasReadNew(true);
+		w.setHasReadOld(true);
 		w.update(getSQLite(), "convey");
 
 		getAppState().setAllRow(Word.getAllRow(getSQLite()));
@@ -127,7 +127,7 @@ public class MainTab extends TabActivity {
 		DebugHelper.debug(wordMap.get(word).getIndonesianWord());
 		DebugHelper.debug(wordMap.get(word).getEnglishWord());
 		DebugHelper.debug(wordMap.get(word).getState());
-		DebugHelper.debug(wordMap.get(word).isHaveReadNew());
-		DebugHelper.debug(wordMap.get(word).isHaveReadOld());
+		DebugHelper.debug(wordMap.get(word).isHasReadNew());
+		DebugHelper.debug(wordMap.get(word).isHasReadOld());
 	}
 }

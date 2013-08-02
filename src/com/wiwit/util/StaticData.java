@@ -1,7 +1,7 @@
 package com.wiwit.util;
 
 public class StaticData {
-
+	public static int TOAST_DURATION = 50;
 	public static String mini = "" + "abduct@_@menculik@_@true@_@false@-@"
 			+ "abhor@_@tidak menyukai@_@true@_@false@-@"
 			+ "abominable@_@buruk sekali@_@true@_@false@-@"
@@ -14,7 +14,7 @@ public class StaticData {
 			+ "cope@_@mengatasi, menguasai@_@false@_@false@-@"
 			+ "cord@_@kawat@_@false@_@falsee@-@"
 			+ "corpse@_@mayat, jenazah@_@false@_@true@-@";
-	
+
 	public static String str = ""
 			+ "abduct@_@menculik@_@false@_@false@-@"
 			+ "abhor@_@tidak menyukai@_@false@_@false@-@"

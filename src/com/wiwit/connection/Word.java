@@ -13,8 +13,8 @@ public class Word {
 	private String englishWord;
 	private String indonesianWord;
 	private String state;
-	private boolean haveReadNew;
-	private boolean haveReadOld;
+	private boolean hasReadNew;
+	private boolean hasReadOld;
 
 	public static String COLUMN_1 = "english_word";
 	public static String COLUMN_2 = "indonesian_word";
@@ -49,20 +49,20 @@ public class Word {
 		this.state = state;
 	}
 
-	public boolean isHaveReadNew() {
-		return haveReadNew;
+	public boolean isHasReadNew() {
+		return hasReadNew;
 	}
 
-	public void setHaveReadNew(boolean haveReadNew) {
-		this.haveReadNew = haveReadNew;
+	public void setHasReadNew(boolean haveReadNew) {
+		this.hasReadNew = haveReadNew;
 	}
 
-	public boolean isHaveReadOld() {
-		return haveReadOld;
+	public boolean isHasReadOld() {
+		return hasReadOld;
 	}
 
-	public void setHaveReadOld(boolean haveReadOld) {
-		this.haveReadOld = haveReadOld;
+	public void setHasReadOld(boolean haveReadOld) {
+		this.hasReadOld = haveReadOld;
 	}
 
 	public static String getCreatedTableStatment() {
@@ -84,8 +84,8 @@ public class Word {
 					+ "`) VALUES ";
 			insertSql2 = insertSql2 + "('" + getEnglishWord() + "', '"
 					+ getIndonesianWord() + "', '" + getState() + "','"
-					+ (isHaveReadNew() ? 1 : 0) + "','"
-					+ (isHaveReadOld() ? 1 : 0) + "');";
+					+ (isHasReadNew() ? 1 : 0) + "','"
+					+ (isHasReadOld() ? 1 : 0) + "');";
 			// DebugHelper.debug(insertSql2);
 			sd.execSQL(insertSql2);
 		} catch (Exception e) {
@@ -103,14 +103,13 @@ public class Word {
 		sql2 = sql2 + "`" + COLUMN_1 + "` = '" + getEnglishWord() + "', ";
 		sql2 = sql2 + "`" + COLUMN_2 + "` = '" + getIndonesianWord() + "', ";
 		sql2 = sql2 + "`" + COLUMN_3 + "` = '" + getState() + "', ";
-		sql2 = sql2 + "`" + COLUMN_4 + "` = '" + (isHaveReadNew() ? 1 : 0)
+		sql2 = sql2 + "`" + COLUMN_4 + "` = '" + (isHasReadNew() ? 1 : 0)
 				+ "', ";
-		sql2 = sql2 + "`" + COLUMN_5 + "` = '" + (isHaveReadOld() ? 1 : 0)
-				+ "'";
+		sql2 = sql2 + "`" + COLUMN_5 + "` = '" + (isHasReadOld() ? 1 : 0) + "'";
 		sql2 = sql2 + " WHERE `" + TABLE_NAME + "`.`english_word` = '" + key
 				+ "'";
 		try {
-//			DebugHelper.debug(sql2);
+			// DebugHelper.debug(sql2);
 			sd.execSQL(sql2);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,14 +126,31 @@ public class Word {
 		} else if (variable.equals(COLUMN_3)) {
 			w.setState(value);
 		} else if (variable.equals(COLUMN_4)) {
-			w.setHaveReadNew(value.equals("0") ? false : true);
+			w.setHasReadNew(value.equals("0") ? false : true);
 		} else if (variable.equals(COLUMN_5)) {
-			w.setHaveReadOld(value.equals("0") ? false : true);
+			w.setHasReadOld(value.equals("0") ? false : true);
 		}
 	}
 
-	public static void updateReadableAllRow(String state) {
-
+	public static Word findWord(SQLiteDatabase sd, String english) {
+		try {
+			Cursor cursor = sd.rawQuery("SELECT * FROM `" + TABLE_NAME + "`",
+					null);
+			if (cursor.moveToFirst()) {
+				do {
+					Word w = new Word();
+					for (int i = 0; i < cursor.getColumnCount(); i++) {
+						fillIt(w, cursor.getColumnName(i), cursor.getString(i));
+					}
+					if (w.getEnglishWord().equalsIgnoreCase(english)) {
+						return w;
+					}
+				} while (cursor.moveToNext());
+			}
+		} catch (Exception e) {
+			DebugHelper.exception(e);
+		}
+		return null;
 	}
 
 	public static HashMap<String, Word> getAllRow(SQLiteDatabase sd) {
@@ -167,5 +183,23 @@ public class Word {
 		} catch (Exception e) {
 			DebugHelper.exception(e);
 		}
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		try {
+			String english = (String) object;
+			return this.getEnglishWord().equals(english);
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public void updateElement(Word word) {
+		this.englishWord = word.getEnglishWord();
+		this.indonesianWord = word.getIndonesianWord();
+		this.state = word.getState();
+		this.hasReadNew = word.hasReadNew;
+		this.hasReadOld = word.hasReadOld;
 	}
 }
