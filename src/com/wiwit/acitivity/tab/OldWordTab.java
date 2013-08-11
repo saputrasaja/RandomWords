@@ -37,6 +37,7 @@ public class OldWordTab extends Activity {
 	protected AlertDialog.Builder moveToNewDialog;
 	protected AlertDialog.Builder moveToDelDialog;
 	protected TextView moveToTextView;
+	protected TextView totalWords;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class OldWordTab extends Activity {
 		moveToTextView = (TextView) findViewById(R.id.move_to_tv_in_old);
 		start = (Button) findViewById(R.id.start_old);
 		toggleOldWord = (ToggleButton) findViewById(R.id.toggle_old);
+		totalWords= (TextView) findViewById(R.id.total_old);
 		// set visibility
 		englishWord.setVisibility(View.INVISIBLE);
 		indonesianWord.setVisibility(View.INVISIBLE);
@@ -63,6 +65,7 @@ public class OldWordTab extends Activity {
 		moveToNew.setVisibility(View.INVISIBLE);
 		moveToDel.setVisibility(View.INVISIBLE);
 		moveToTextView.setVisibility(View.INVISIBLE);
+		totalWords.setVisibility(View.INVISIBLE);
 		// dialog
 		restartDialog = new AlertDialog.Builder(this);
 		moveToNewDialog = new AlertDialog.Builder(this);
@@ -80,7 +83,9 @@ public class OldWordTab extends Activity {
 					next.setVisibility(View.INVISIBLE);
 					edit.setVisibility(View.INVISIBLE);
 					moveToNew.setVisibility(View.INVISIBLE);
+					moveToDel.setVisibility(View.INVISIBLE);
 					moveToTextView.setVisibility(View.INVISIBLE);
+					totalWords.setVisibility(View.INVISIBLE);
 					start.setVisibility(View.INVISIBLE);
 					englishWord.setVisibility(View.INVISIBLE);
 					indonesianWord.setVisibility(View.INVISIBLE);
@@ -150,6 +155,7 @@ public class OldWordTab extends Activity {
 					generateEngine();
 					start.setVisibility(View.INVISIBLE);
 					preDoOrNext();
+					totalWords.setVisibility(View.VISIBLE);
 				}
 			}
 		});
@@ -189,7 +195,7 @@ public class OldWordTab extends Activity {
 		edit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				switchTab(3);
+				switchTab(4);
 				getAppState().editTab.editWord(word, EditTab.FROM_OLD);
 			}
 		});
@@ -214,13 +220,16 @@ public class OldWordTab extends Activity {
 		moveToDel.setVisibility(View.INVISIBLE);
 		if (engine.canRandomWord()) {
 			randomWordProcess();
+			totalWords.setText(""+engine.getWords().size());
 		} else {
 			englishWord.setText("F I N I S H");
 			indonesianWord
 					.setText("please restart or manage your vocab list :)");
 			englishWord.setVisibility(View.VISIBLE);
 			indonesianWord.setVisibility(View.VISIBLE);
+			totalWords.setText("b_d");
 		}
+		
 	}
 
 	// all importan fungsions undder this comment

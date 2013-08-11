@@ -41,11 +41,7 @@ public class WordEngine {
 	}
 
 	public boolean canRandomWord() {
-		// DebugHelper.debug("canRandomWord");
-		// DebugHelper.debug(getWords().size() > 2);
-		// DebugHelper.debug(getWords().size() > (getWords().size() / 2));
-		if (getWords().size() > 2
-				|| getWords().size() > (getWords().size() / 2)) {
+		if (getWords().size() > 0) {
 			return true;
 		}
 		return false;
@@ -55,7 +51,8 @@ public class WordEngine {
 		if (!canRandomWord()) {
 			return null;
 		}
-		return this.words.get((int) (Math.random() * (this.words.size())));
+		int random= (int) (Math.random() * (this.words.size()));
+		return this.words.get(random);
 	}
 
 	private void findAndUpdate(Word word, String method) {
@@ -78,6 +75,16 @@ public class WordEngine {
 				word.setHasReadNew(false);
 				word.setState(WordUtil.NEW.toString());
 			}
+			word.update(sqLiteDatabase, word.getEnglishWord());
+			remove(word);
+		} else if (wordState.equals(WordUtil.DELETE.toString())) {
+			if (method.equals(ALREDY_READ)) {
+				word.setHasReadDel(true);
+			} else if (method.equals(UP_STATE)) {
+				word.setHasReadOld(false);
+				word.setState(WordUtil.OLD.toString());
+			}
+			word.update(sqLiteDatabase, word.getEnglishWord());
 			remove(word);
 		}
 	}
@@ -116,6 +123,8 @@ public class WordEngine {
 					alredyRead = word.isHasReadNew();
 				} else if (state.equals(WordUtil.OLD.toString())) {
 					alredyRead = word.isHasReadOld();
+				} else if (state.equals(WordUtil.DELETE.toString())) {
+					alredyRead = word.isHasReadDel();
 				}
 				if (!alredyRead) {
 					result.add(word);
@@ -138,6 +147,8 @@ public class WordEngine {
 					word.setHasReadNew(false);
 				} else if (word.getState().equals(WordUtil.OLD.toString())) {
 					word.setHasReadOld(false);
+				} else if (word.getState().equals(WordUtil.DELETE.toString())) {
+					word.setHasReadDel(false);
 				}
 				word.update(sqLiteDatabase, word.getEnglishWord());
 			}

@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <TableRow
-        android:id="@+id/row_find_edit"
+        android:id="@+id/row1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp" >
@@ -26,7 +26,6 @@
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp" />
-
     </TableRow>
 
     <TableRow
@@ -45,12 +44,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:height="180dp"
+            android:height="230dp"
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp"
             android:width="220dp" />
-
     </TableRow>
 
     <TableRow
@@ -63,7 +61,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Show" />
-
     </TableRow>
 
     <TableRow
@@ -105,6 +102,13 @@
             android:layout_marginLeft="10dp"
             android:text="Old" />
 
+        <TextView
+            android:id="@+id/total_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="110dp"
+            android:text="0"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
     </TableRow>
 
 </LinearLayout>

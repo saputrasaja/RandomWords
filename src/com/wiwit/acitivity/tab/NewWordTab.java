@@ -1,9 +1,13 @@
 package com.wiwit.acitivity.tab;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import com.wiwit.all.R;
+import com.wiwit.connection.Setting;
 import com.wiwit.connection.Word;
 import com.wiwit.connection.WordUtil;
-import com.wiwit.util.DebugHelper;
 import com.wiwit.util.MyApp;
 import com.wiwit.util.StaticData;
 import com.wiwit.util.WordEngine;
@@ -11,7 +15,6 @@ import com.wiwit.util.WordEngine;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -37,6 +40,7 @@ public class NewWordTab extends Activity {
 	protected AlertDialog.Builder restartDialog;
 	protected AlertDialog.Builder moveToOldDialog;
 	protected TextView moveToTextView;
+	protected TextView totalWords;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,7 @@ public class NewWordTab extends Activity {
 		moveToTextView = (TextView) findViewById(R.id.move_to_tv_in_new);
 		start = (Button) findViewById(R.id.start_new);
 		toggleNewWord = (ToggleButton) findViewById(R.id.toggle_new);
+		totalWords = (TextView) findViewById(R.id.total_new);
 		// Set Visibility
 		englishWord.setVisibility(View.INVISIBLE);
 		indonesianWord.setVisibility(View.INVISIBLE);
@@ -61,6 +66,7 @@ public class NewWordTab extends Activity {
 		moveToOld.setVisibility(View.INVISIBLE);
 		moveToTextView.setVisibility(View.INVISIBLE);
 		start.setVisibility(View.INVISIBLE);
+		totalWords.setVisibility(View.INVISIBLE);
 		// init other component
 		restartDialog = new AlertDialog.Builder(this);
 		moveToOldDialog = new AlertDialog.Builder(this);
@@ -78,12 +84,19 @@ public class NewWordTab extends Activity {
 					edit.setVisibility(View.INVISIBLE);
 					moveToOld.setVisibility(View.INVISIBLE);
 					moveToTextView.setVisibility(View.INVISIBLE);
+					totalWords.setVisibility(View.INVISIBLE);
 					start.setVisibility(View.INVISIBLE);
 					englishWord.setVisibility(View.INVISIBLE);
 					indonesianWord.setVisibility(View.INVISIBLE);
 					show.setVisibility(View.INVISIBLE);
 					readyToStart = false;
-					engine.restartWord();
+					// start
+					HashMap<String, Word> mapWords = Word
+							.getAllRow(getSQLite());
+					engine = WordEngine.generateWordEngine(mapWords,
+							WordUtil.NEW.toString(), getAppState().getSd());
+					forceGenerate(engine.getWords(), engine);
+					// end
 					toast("Lets play again");
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
@@ -102,6 +115,7 @@ public class NewWordTab extends Activity {
 				switch (which) {
 				case DialogInterface.BUTTON_POSITIVE:
 					engine.downState(word);
+					removeWordFromSetting(word);
 					preDoOrNext();
 					toast("Success move to OLD state");
 					break;
@@ -130,20 +144,19 @@ public class NewWordTab extends Activity {
 					generateEngine();
 					start.setVisibility(View.INVISIBLE);
 					preDoOrNext();
+					totalWords.setVisibility(View.VISIBLE);
 				}
 			}
 		});
 		show.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (engine.canRandomWord()) {
-					next.setVisibility(View.VISIBLE);
-					edit.setVisibility(View.VISIBLE);
-					indonesianWord.setVisibility(View.VISIBLE);
-					moveToTextView.setVisibility(View.VISIBLE);
-					moveToOld.setVisibility(View.VISIBLE);
-					show.setVisibility(View.INVISIBLE);
-				}
+				next.setVisibility(View.VISIBLE);
+				edit.setVisibility(View.VISIBLE);
+				indonesianWord.setVisibility(View.VISIBLE);
+				moveToTextView.setVisibility(View.VISIBLE);
+				moveToOld.setVisibility(View.VISIBLE);
+				show.setVisibility(View.INVISIBLE);
 			}
 		});
 		next.setOnClickListener(new OnClickListener() {
@@ -162,10 +175,23 @@ public class NewWordTab extends Activity {
 		edit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				switchTab(3);
+				switchTab(4);
 				getAppState().editTab.editWord(word, EditTab.FROM_NEW);
 			}
 		});
+	}
+
+	protected void removeWordFromSetting(Word word) {
+		getSetting().removeWordFromSetting(word, getAppState().getSd());
+	}
+
+	protected Setting getSetting() {
+		Setting setting = Setting.findSetting(getAppState().getSd(),
+				Setting.KEY_NEW_WORD_LIST);
+		if (setting == null) {
+			return new Setting();
+		}
+		return setting;
 	}
 
 	protected void randomWordProcess() {
@@ -177,24 +203,46 @@ public class NewWordTab extends Activity {
 		show.setVisibility(View.VISIBLE);
 	}
 
+	protected boolean canRandom(int size) {
+		if (size >= StaticData.NEW_WORDS_SIZE / 2) {
+			return true;
+		}
+		return false;
+	}
+
 	protected void preDoOrNext() {
+		Setting setting = getSetting();
 		next.setVisibility(View.INVISIBLE);
 		edit.setVisibility(View.INVISIBLE);
 		moveToOld.setVisibility(View.INVISIBLE);
 		moveToTextView.setVisibility(View.INVISIBLE);
 		show.setVisibility(View.INVISIBLE);
-		if (engine.canRandomWord()) {
+		if (canRandom(engine.getWords().size())) {
 			randomWordProcess();
+			totalWords.setText("" + engine.getWords().size());
 		} else {
-			englishWord.setText("F I N I S H");
-			indonesianWord
-					.setText("please restart or manage your vocab list :)");
-			englishWord.setVisibility(View.VISIBLE);
-			indonesianWord.setVisibility(View.VISIBLE);
+			toast("Horaaay, start from begining again");
+			if (canRandom(setting.getNewWordsValue().size())) {
+				HashMap<String, Word> mapWords = Word.getAllRow(getSQLite());
+				List<Word> words = new ArrayList<Word>();
+				for (String word : getSetting().getNewWordsValue()) {
+					words.add(mapWords.get(word));
+				}
+				engine.setWords(words);
+				totalWords.setText("" + engine.getWords().size());
+				randomWordProcess();
+			} else {
+				englishWord.setText("F I N I S H");
+				indonesianWord
+						.setText("please restart or manage your vocab list :)");
+				englishWord.setVisibility(View.VISIBLE);
+				indonesianWord.setVisibility(View.VISIBLE);
+				totalWords.setText("b_d");
+			}
 		}
 	}
 
-	// all importan fungsions undder this comment
+	// all important function under this comment
 	protected void toast(String message) {
 		Toast toast = Toast.makeText(NewWordTab.this, message,
 				StaticData.TOAST_DURATION);
@@ -226,10 +274,47 @@ public class NewWordTab extends Activity {
 		toast("Success update data");
 	}
 
+	protected void forceGenerate(List<Word> allNewWords, WordEngine engine) {
+		List<Word> newWords = new ArrayList<Word>();
+		if (allNewWords.size() > StaticData.NEW_WORDS_SIZE) {
+			while (newWords.size() < StaticData.NEW_WORDS_SIZE) {
+				int location = (int) (Math.random() * (allNewWords.size()));
+				newWords.add(allNewWords.get(location));
+				allNewWords.remove(location);
+			}
+		} else {
+			for (Word word : allNewWords) {
+				newWords.add(word);
+			}
+		}
+		engine.setWords(newWords);
+		engine.setWordState(WordUtil.NEW.toString());
+		// setting for newWords
+		Setting setting = getSetting();
+		setting.generateNewWordsValue(newWords, getAppState().getSd());
+		setting.insert(getAppState().getSd());
+	}
+
 	protected void generateEngine() {
-		getAppState().setAllRow(Word.getAllRow(getSQLite()));
-		engine = WordEngine.generateWordEngine(getAppState().getAllRow(),
+		Setting setting = getSetting();
+		HashMap<String, Word> mapWords = Word.getAllRow(getSQLite());
+		engine = WordEngine.generateWordEngine(Word.getAllRow(getSQLite()),
 				WordUtil.NEW.toString(), getAppState().getSd());
+		boolean canIn = true;
+		if (setting != null && setting.isHasNewWord() && canIn) {
+			List<Word> newWords = new ArrayList<Word>();
+			for (String key : setting.getNewWordsValue()) {
+				if (mapWords.get(key) != null
+						&& !mapWords.get(key).isHasReadDel()) {
+					newWords.add(mapWords.get(key));
+				}
+			}
+			engine.setWordState(WordUtil.NEW.toString());
+			engine.setWords(newWords);
+			getAppState().setAllRow(mapWords);
+		} else {
+			forceGenerate(engine.getWords(), engine);
+		}
 	}
 
 	protected MyApp getAppState() {

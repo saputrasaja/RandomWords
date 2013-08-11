@@ -3,7 +3,6 @@ package com.wiwit.acitivity.tab;
 import com.wiwit.all.R;
 import com.wiwit.connection.Word;
 import com.wiwit.connection.WordUtil;
-import com.wiwit.util.DebugHelper;
 import com.wiwit.util.MyApp;
 import com.wiwit.util.StaticData;
 
@@ -33,6 +32,7 @@ public class EditTab extends Activity {
 	protected RadioGroup stateGroup;
 	protected CheckBox haveReadNew;
 	protected CheckBox haveReadOld;
+	protected CheckBox haveReadDel;
 	protected Button save;
 	protected Button search;
 	protected Button clear;
@@ -43,15 +43,17 @@ public class EditTab extends Activity {
 	protected TableRow rowStateTV;
 	protected TableRow rowStateRadio;
 	protected TableRow rowReadableTV;
-	protected TableRow rowReadableCheck;
 	// dialog
 	protected AlertDialog.Builder saveDialog;
 	//
 	public static String FROM_NEW = "FROM_NEW";
 	public static String FROM_OLD = "FROM_OLD";
+	public static String FROM_ALL = "FROM_ALL";
+	public static String FROM_DEL = "FROM_DEL";
 	protected String from;
 	protected String lastState;
-	protected String oldKey;
+
+	// protected String oldKey;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,16 +69,16 @@ public class EditTab extends Activity {
 		stateGroup = (RadioGroup) findViewById(R.id.state_edit);
 		haveReadOld = (CheckBox) findViewById(R.id.have_read_old_edit);
 		haveReadNew = (CheckBox) findViewById(R.id.have_read_new_edit);
+		haveReadDel = (CheckBox) findViewById(R.id.have_read_del_edit);
 		save = (Button) findViewById(R.id.save_edit);
 		search = (Button) findViewById(R.id.search_edit);
 		clear = (Button) findViewById(R.id.clear_edit);
 		// row
-		rowFindEdit = (TableRow) findViewById(R.id.row_find_edit);
+		rowFindEdit = (TableRow) findViewById(R.id.row1);
 		rowSearchEdit = (TableRow) findViewById(R.id.row_search_edit);
 		rowStateTV = (TableRow) findViewById(R.id.row_state_tv_edit);
 		rowStateRadio = (TableRow) findViewById(R.id.row_state_radio_edit);
 		rowReadableTV = (TableRow) findViewById(R.id.row_readable_tv_edit);
-		rowReadableCheck = (TableRow) findViewById(R.id.row_readable_check_edit);
 		// dialog
 		saveDialog = new AlertDialog.Builder(this);
 		initListener();
@@ -86,20 +88,26 @@ public class EditTab extends Activity {
 	public void editWord(Word word, String from) {
 		this.from = from;
 		setElements(word);
-		english.setEnabled(false);
-		rowFindEdit.setVisibility(View.INVISIBLE);
 		rowSearchEdit.setVisibility(View.INVISIBLE);
 		rowStateTV.setVisibility(View.INVISIBLE);
 		rowStateRadio.setVisibility(View.INVISIBLE);
 		rowReadableTV.setVisibility(View.INVISIBLE);
-		rowReadableCheck.setVisibility(View.INVISIBLE);
+
+	}
+
+	public void findWOrd(String findWord) {
+		this.findWord.setText(findWord);
+		searchWord();
 	}
 
 	protected void setElements(Word word) {
 		english.setText(word.getEnglishWord());
 		indonesian.setText(word.getIndonesianWord());
+		findWord.setText(word.getEnglishWord());
+		findWord.setEnabled(false);
 		haveReadNew.setChecked(word.isHasReadNew());
 		haveReadOld.setChecked(word.isHasReadOld());
+		haveReadDel.setChecked(word.isHasReadDel());
 		if (WordUtil.NEW.toString().equals(word.getState())) {
 			newState.setChecked(true);
 		} else if (WordUtil.OLD.toString().equals(word.getState())) {
@@ -118,6 +126,7 @@ public class EditTab extends Activity {
 		w.setIndonesianWord(indonesian.getText().toString());
 		w.setHasReadNew(haveReadNew.isChecked());
 		w.setHasReadOld(haveReadOld.isChecked());
+		w.setHasReadDel(haveReadDel.isChecked());
 		w.setState(state);
 		return w;
 	}
@@ -128,11 +137,13 @@ public class EditTab extends Activity {
 		rowStateTV.setVisibility(View.VISIBLE);
 		rowStateRadio.setVisibility(View.VISIBLE);
 		rowReadableTV.setVisibility(View.VISIBLE);
-		rowReadableCheck.setVisibility(View.VISIBLE);
 		english.setText("");
 		indonesian.setText("");
+		findWord.setText("");
+		findWord.setEnabled(true);
 		haveReadNew.setChecked(false);
 		haveReadOld.setChecked(false);
+		haveReadDel.setChecked(false);
 		oldState.setChecked(false);
 		delState.setChecked(false);
 		newState.setChecked(true);
@@ -145,28 +156,55 @@ public class EditTab extends Activity {
 				switch (which) {
 				case DialogInterface.BUTTON_POSITIVE:
 					Word word = getWordFromElements();
-					word.update(getAppState().getSd(), word.getEnglishWord());
-					english.setEnabled(true);
-					if (from != null) {
-						if (from.equals(FROM_NEW)) {
-							switchTab(1);
-							getAppState().newWordTab.setElement(word);
-						} else if (from.equals(FROM_OLD)) {
-							switchTab(2);
-							getAppState().oldWordTab.setElement(word);
+					if (word.getEnglishWord() != null
+							&& word.getIndonesianWord() != null) {
+						word.update(getAppState().getSd(), findWord.getText()
+								.toString());
+						english.setEnabled(true);
+						if (from != null) {
+							if (from.equals(FROM_NEW)) {
+								switchTab(1);
+								getAppState().newWordTab.setElement(word);
+							} else if (from.equals(FROM_OLD)) {
+								switchTab(2);
+								getAppState().oldWordTab.setElement(word);
+							} else if (from.equals(FROM_DEL)) {
+								switchTab(3);
+								getAppState().delWordTab.setElement(word);
+							}
+						} else {
+							// from == null, must have lastState and oldKey
+							if (lastState != null
+									&& lastState
+											.equals(WordUtil.NEW.toString())) {
+								if (!getAppState().isNewTabIsNull()) {
+									getAppState().newWordTab.updateWord(word,
+											findWord.getText().toString());
+								}
+							} else if (lastState != null
+									&& lastState
+											.equals(WordUtil.OLD.toString())) {
+								if (!getAppState().isOldTabIsNull()) {
+									getAppState().oldWordTab.updateWord(word,
+											findWord.getText().toString());
+								}
+							} else if (lastState != null
+									&& lastState.equals(WordUtil.DELETE
+											.toString())) {
+								if (!getAppState().isOldTabIsNull()) {
+									getAppState().delWordTab.updateWord(word,
+											findWord.getText().toString());
+								}
+							}
+							toast("Success update data");
+							lastState = null;
+							// oldKey = null;
 						}
+						from = null;
+						initDefaultElement();
 					} else {
-						// from == null, must have lastState and oldKey
-						if (lastState.equals(WordUtil.NEW.toString())) {
-							getAppState().newWordTab.updateWord(word, oldKey);
-						} else if (lastState.equals(WordUtil.OLD.toString())) {
-							getAppState().oldWordTab.updateWord(word, oldKey);
-						}
-						toast("Success update data");
-						lastState = null;
-						oldKey = null;
+						toast("indonesian or english word can't empty");
 					}
-					initDefaultElement();
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
 					break;
@@ -191,26 +229,35 @@ public class EditTab extends Activity {
 						switchTab(1);
 					} else if (from.equals(FROM_OLD)) {
 						switchTab(2);
+					} else if (from.equals(FROM_DEL)) {
+						switchTab(3);
 					}
+
 				}
+				from = null;
+				findWord.setEnabled(true);
 			}
 		});
 		search.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Word w = Word.findWord(getAppState().getSd(), findWord
-						.getText().toString());
-				if (w == null) {
-					String message = "Can't find "
-							+ findWord.getText().toString();
-					toast(message);
-				} else {
-					setElements(w);
-					lastState = w.getState();
-					oldKey = w.getEnglishWord();
-				}
+				searchWord();
 			}
 		});
+	}
+
+	protected void searchWord() {
+		Word w = Word.findWord(getAppState().getSd(), findWord.getText()
+				.toString());
+		if (w == null) {
+			String message = "Can't find " + findWord.getText().toString();
+			toast(message);
+		} else {
+			setElements(w);
+			lastState = w.getState();
+			// oldKey = w.getEnglishWord();
+			findWord.setEnabled(false);
+		}
 	}
 
 	protected void toast(String message) {

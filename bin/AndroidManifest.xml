@@ -28,6 +28,12 @@
         <activity android:name="com.wiwit.acitivity.tab.OldWordTab" />
         <activity android:name="com.wiwit.acitivity.tab.InfoAppTab" />
         <activity android:name="com.wiwit.acitivity.tab.EditTab" />
+        <activity android:name="com.wiwit.acitivity.tab.AllWordTab" />
+        <activity android:name="com.wiwit.acitivity.tab.DelWordTab" />
+        <activity
+            android:name="com.wiwit.all.DelTab"
+            android:label="@string/title_activity_del_tab" >
+        </activity>
     </application>
 
 </manifest>

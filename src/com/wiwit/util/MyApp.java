@@ -2,6 +2,8 @@ package com.wiwit.util;
 
 import java.util.HashMap;
 
+import com.wiwit.acitivity.tab.AllWordTab;
+import com.wiwit.acitivity.tab.DelWordTab;
 import com.wiwit.acitivity.tab.EditTab;
 import com.wiwit.acitivity.tab.NewWordTab;
 import com.wiwit.acitivity.tab.OldWordTab;
@@ -20,6 +22,8 @@ public class MyApp extends Application {
 	public EditTab editTab;
 	public NewWordTab newWordTab;
 	public OldWordTab oldWordTab;
+	public AllWordTab allWordTab;
+	public DelWordTab delWordTab;
 
 	public MyApp() {
 	}
@@ -40,29 +44,12 @@ public class MyApp extends Application {
 		this.allRow = new HashMap<String, Word>();
 		this.allRow = allRow;
 	}
-	
-	public void viewAllData() {
-		DebugHelper.debug("==========================VIEW ALL DATA==========================");
-		for (String key : getAllRow().keySet()) {
-			Word w = getAllRow().get(key);
-			DebugHelper.debug(w.getEnglishWord() + " || "
-					+ w.getIndonesianWord() + " @" + w.getState() + "@ "
-					+ w.isHasReadNew() + " " + w.isHasReadOld());
-		}
+
+	public boolean isNewTabIsNull() {
+		return (newWordTab == null);
 	}
 
-	public WordInfoUtil generateWordInfo() {
-		WordInfoUtil wordInfoUtil = new WordInfoUtil();
-		for (String engLishWord : getAllRow().keySet()) {
-			String state = getAllRow().get(engLishWord).getState();
-			if (state.equals(WordUtil.NEW.toString())) {
-				wordInfoUtil.incrementNew();
-			} else if (state.equals(WordUtil.OLD.toString())) {
-				wordInfoUtil.incrementOld();
-			} else if (state.equals(WordUtil.DELETE.toString())) {
-				wordInfoUtil.incrementDelete();
-			}
-		}
-		return wordInfoUtil;
+	public boolean isOldTabIsNull() {
+		return (oldWordTab == null);
 	}
 }

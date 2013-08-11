@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.wiwit.all.R;
 import com.wiwit.connection.DataBase;
+import com.wiwit.connection.Setting;
 import com.wiwit.connection.Word;
 import com.wiwit.connection.WordUtil;
 import com.wiwit.util.DebugHelper;
@@ -11,7 +12,6 @@ import com.wiwit.util.MyApp;
 
 import android.app.AlertDialog;
 import android.app.TabActivity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -46,6 +46,8 @@ public class MainTab extends TabActivity {
 		TabSpec oldWordSpec = tabHost.newTabSpec("old");
 		TabSpec editTabSpec = tabHost.newTabSpec("edit");
 		TabSpec infoTabSpec = tabHost.newTabSpec("info");
+		TabSpec allTabSpec = tabHost.newTabSpec("all");
+		TabSpec delTabSpec = tabHost.newTabSpec("all");
 
 		/* TabSpec setIndicator() is used to set name for the tab. */
 		/* TabSpec setContent() is used to set content for a particular tab. */
@@ -57,11 +59,17 @@ public class MainTab extends TabActivity {
 				new Intent(this, InfoAppTab.class));
 		editTabSpec.setIndicator("Edit").setContent(
 				new Intent(this, EditTab.class));
+		allTabSpec.setIndicator("All").setContent(
+				new Intent(this, AllWordTab.class));
+		delTabSpec.setIndicator("Del").setContent(
+				new Intent(this, DelWordTab.class));
 		/* Add tabSpec to the TabHost to display. */
 		tabHost.addTab(infoTabSpec);
 		tabHost.addTab(newWordSpec);
 		tabHost.addTab(oldWordSpec);
+		tabHost.addTab(delTabSpec);
 		tabHost.addTab(editTabSpec);
+		tabHost.addTab(allTabSpec);
 	}
 
 	public void setTransactionID(long l) {
@@ -80,17 +88,16 @@ public class MainTab extends TabActivity {
 		return getAppState().getSd();
 	}
 
-	protected void initFirstlyLauncth() {
-		DataBase.initWordFromLocal(getSQLite());
-	}
-
 	protected void initFirst() {
 		MyApp appState = ((MyApp) this.getApplicationContext());
 		appState.setSd(openOrCreateDatabase(DataBase.DATABASE_NAME,
-				MODE_PRIVATE, null));
-		initFirstlyLauncth();
+				MODE_WORLD_WRITEABLE, null));
+		// START INIT FIRST
+		DataBase.initWordFromLocal(getSQLite());
+		
+		// END INIT
 		getAppState().setAllRow(Word.getAllRow(getSQLite()));
-		testUpdate();
+		// testUpdate();
 		checkGlobalVariable();
 	}
 
@@ -100,34 +107,5 @@ public class MainTab extends TabActivity {
 		DebugHelper.debug("is SQLite != null : " + (appState.getSd() != null));
 		DebugHelper.debug("is allRowe != null : "
 				+ (appState.getAllRow() != null));
-	}
-
-	protected void testUpdate() {
-		String word = "convey";
-		HashMap<String, Word> wordMap = getAppState().getAllRow();
-		DebugHelper.debug("indonesian : "
-				+ wordMap.get(word).getIndonesianWord());
-		DebugHelper
-				.debug("english : " + wordMap.get(word).getEnglishWord());
-		DebugHelper.debug("state : " + wordMap.get(word).getState());
-		DebugHelper.debug("isHaveReadNew : "
-				+ wordMap.get(word).isHasReadNew());
-		DebugHelper.debug("isHaveReadOld : "
-				+ wordMap.get(word).isHasReadOld());
-
-		Word w = wordMap.get("convey");
-		w.setIndonesianWord("indo");
-		w.setState(WordUtil.DELETE.toString());
-		w.setHasReadNew(true);
-		w.setHasReadOld(true);
-		w.update(getSQLite(), "convey");
-
-		getAppState().setAllRow(Word.getAllRow(getSQLite()));
-		wordMap = getAppState().getAllRow();
-		DebugHelper.debug(wordMap.get(word).getIndonesianWord());
-		DebugHelper.debug(wordMap.get(word).getEnglishWord());
-		DebugHelper.debug(wordMap.get(word).getState());
-		DebugHelper.debug(wordMap.get(word).isHasReadNew());
-		DebugHelper.debug(wordMap.get(word).isHasReadOld());
 	}
 }

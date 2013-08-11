@@ -2,6 +2,7 @@ package com.wiwit.util;
 
 public class StaticData {
 	public static int TOAST_DURATION = 50;
+	public static int NEW_WORDS_SIZE = 50;
 	public static String mini = "" + "abduct@_@menculik@_@true@_@false@-@"
 			+ "abhor@_@tidak menyukai@_@true@_@false@-@"
 			+ "abominable@_@buruk sekali@_@true@_@false@-@"
@@ -277,7 +278,7 @@ public class StaticData {
 			+ "constitution@_@undang undang dasar, keadaan jasamni@_@false@_@true@-@"
 			+ "contemplate@_@merenungkan@_@false@_@false@-@"
 			+ "content@_@puas, isi, daya muat@_@false@_@false@-@"
-			+ "Contractions@_@singkatan@_@true@_@false@-@"
+			+ "contractions@_@singkatan@_@true@_@false@-@"
 			+ "contraption@_@pesawat yang aneh@_@true@_@false@-@"
 			+ "contrary@_@kebalikan@_@false@_@true@-@"
 			+ "convenient@_@tidak menyusahkan, baik sekali@_@false@_@false@-@"

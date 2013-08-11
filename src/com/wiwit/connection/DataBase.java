@@ -9,12 +9,16 @@ import com.wiwit.util.MyApp;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DataBase {
-	public static final String DATABASE_NAME = "RandomWordsApp3";
+	public static final String DATABASE_NAME = "RandomWordsApp";
+	
 
 	public static void initWordFromLocal(SQLiteDatabase sd) {
 		sd.execSQL(Word.getCreatedTableStatment());
-		for (Word w : ConverterHelper.getFromLocalVariable()) {
-			w.insert(sd);
+		if (!Word.hasData(sd)) {
+			for (Word w : ConverterHelper.getFromLocalVariable()) {
+				w.insert(sd);
+			}
 		}
+		sd.execSQL(Setting.getCreatedTableStatment());
 	}
 }

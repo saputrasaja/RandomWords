@@ -10,5 +10,6 @@
     <string name="tv_old_word">Old Word </string>
     <string name="tv_delete_word">Delete Word </string>
     <string name="btn_text_refresh">Refresh</string>
+    <string name="title_activity_del_tab">DelTab</string>
 
 </resources>

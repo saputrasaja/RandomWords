@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <TableRow
-        android:id="@+id/row_find_edit"
+        android:id="@+id/row1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -38,8 +38,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Search"/>
-
+            android:text="Search" />
     </TableRow>
 
     <TableRow
@@ -53,10 +52,16 @@
             android:layout_height="wrap_content"
             android:text="English Word : "
             android:textAppearance="?android:attr/textAppearanceMedium" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow41"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
         <EditText
             android:id="@+id/english_edit"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:width="210dp" />
@@ -85,12 +90,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:height="100dp"
+            android:height="125dp"
             android:width="315dp" />
     </TableRow>
 
     <TableRow
         android:id="@+id/row_state_tv_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/row_state_radio_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -100,18 +111,12 @@
             android:layout_height="wrap_content"
             android:text="State :"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/row_state_radio_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
 
         <RadioGroup
             android:id="@+id/state_edit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
 
             <RadioButton
                 android:id="@+id/state_new_edit"
@@ -121,19 +126,18 @@
                 android:text="New" />
 
             <RadioButton
-                android:id="@+id/state_del_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:text="Delete" />
-
-            <RadioButton
                 android:id="@+id/state_old_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
+                android:layout_marginLeft="30dp"
                 android:text="Old" />
 
+            <RadioButton
+                android:id="@+id/state_del_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="Delete" />
         </RadioGroup>
     </TableRow>
 
@@ -148,19 +152,6 @@
             android:layout_height="wrap_content"
             android:text="Readable : "
             android:textAppearance="?android:attr/textAppearanceMedium" />
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/row_readable_check_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Readable State : "
-            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <CheckBox
             android:id="@+id/have_read_new_edit"
@@ -173,12 +164,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Old" />
+
+        <CheckBox
+            android:id="@+id/have_read_del_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete" />
     </TableRow>
 
     <TableRow
         android:id="@+id/tableRow12"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content" >
 
         <Button
             android:id="@+id/clear_edit"
@@ -193,7 +190,6 @@
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:text="Save" />
-
     </TableRow>
 
 </LinearLayout>

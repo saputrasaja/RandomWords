@@ -1,6 +1,9 @@
 package com.wiwit.acitivity.tab;
 
+import java.util.HashMap;
+
 import com.wiwit.all.R;
+import com.wiwit.connection.Word;
 import com.wiwit.connection.WordInfoUtil;
 import com.wiwit.connection.WordUtil;
 import com.wiwit.util.DebugHelper;
@@ -53,9 +56,25 @@ public class InfoAppTab extends Activity {
 		return getAppState().getSd();
 	}
 
+	protected WordInfoUtil getInfo() {
+		WordInfoUtil wordInfoUtil = new WordInfoUtil();
+		HashMap<String, Word> map = Word.getAllRow(getSQLite());
+		for (String engLishWord : map.keySet()) {
+			String state = map.get(engLishWord).getState();
+			if (state.equals(WordUtil.NEW.toString())) {
+				wordInfoUtil.incrementNew();
+			} else if (state.equals(WordUtil.OLD.toString())) {
+				wordInfoUtil.incrementOld();
+			} else if (state.equals(WordUtil.DELETE.toString())) {
+				wordInfoUtil.incrementDelete();
+			}
+		}
+		return wordInfoUtil;
+	}
+
 	public void refreshInfo() {
 		try {
-			WordInfoUtil wiu = getAppState().generateWordInfo();
+			WordInfoUtil wiu = getInfo();
 			all.setText(" : " + wiu.getAllWord());
 			newWord.setText(" : " + wiu.getNewWord());
 			oldWord.setText(" : " + wiu.getOldWord());
@@ -67,9 +86,10 @@ public class InfoAppTab extends Activity {
 			toast(e.getMessage());
 		}
 	}
-	
+
 	protected void toast(String message) {
-		Toast toast = Toast.makeText(InfoAppTab.this, message, StaticData.TOAST_DURATION);
+		Toast toast = Toast.makeText(InfoAppTab.this, message,
+				StaticData.TOAST_DURATION);
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		toast.show();
 	}
